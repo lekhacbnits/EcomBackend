@@ -14,6 +14,10 @@ email:{
     type:String,
     required:true
 },
+confirmed:{
+    type:Boolean,
+    default:false
+},
 contact:{
     type:String,
     required:true
