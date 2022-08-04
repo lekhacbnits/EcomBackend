@@ -29,8 +29,8 @@ module.exports.signUp = async (req, res) => {
         minVersion: "TLSv1.2"
       },
       auth: {
-        user: 'lekhasaraf7@gmail.com', // generated ethereal user
-        pass: 'kdvuqdlrscgtvorm', // generated ethereal password
+        user: process.env.MAILID, // generated ethereal user
+        pass: process.env.PASS, // generated ethereal password
       },
     });
 
