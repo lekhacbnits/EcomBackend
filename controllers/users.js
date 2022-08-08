@@ -21,13 +21,13 @@ module.exports.signUp = async (req, res) => {
       password: encryptedPassword
     })
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp.ethereal.email",
       port: 587,
       secure: false, // true for 465, false for other ports
-      tls: {
-        rejectUnauthorized: true,
-        minVersion: "TLSv1.2"
-      },
+      // tls: {
+      //   rejectUnauthorized: true,
+      //   minVersion: "TLSv1.2"
+      // },
       auth: {
         user: process.env.MAILID, // generated ethereal user
         pass: process.env.PASS, // generated ethereal password
@@ -44,9 +44,9 @@ module.exports.signUp = async (req, res) => {
     );
     // save user token
     newUser.Token = token;
-    const url = `http://localhost:3000/confirmation/${token}`
+    const url = `http://localhost:8000/confirmation/${token}`
     const options = {
-      from: 'lekhasaraf7@gmail.com', // sender address
+      from: process.env.MAILID, // sender address
       to: "lekhasaraf09@gmail.com", // list of receivers
       subject: "Verify your email id ✔", // Subject line
       text: "Please click the link below to verify your email id for ecomapp", // plain text body

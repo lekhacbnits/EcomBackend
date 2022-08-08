@@ -7,9 +7,10 @@ const userController = require('./controllers/users')
 const auth = require('./middleware/auth')
 const productRouter = require('./routes/products')
 const User = require('./models/users');
-
 dotenv.config()
 app.use(express.json())
+const Port = process.env.PORT
+console.log(process.env.PORT)
 const connect = async () => {
     try {
         mongoose.connect(process.env.MONGODB)
@@ -39,8 +40,8 @@ app.use("/users", auth, userRouter)
 app.use("/products", auth, productRouter)
 //app.use("/auth", authRouter)
 
-// app.get('/', (req, res)=>{
-//     res.json({"message":"Lekha is a Winner"});
-//     console.log("done");
-// })
-app.listen(3000, () => { connect(); console.log("connected on port 3000") });
+app.get('/', (req, res)=>{
+    res.json({"message":"listening to port 8000"});
+    console.log("done");
+})
+app.listen(Port, () => { connect(); console.log(`connected on port ${Port}`) });
