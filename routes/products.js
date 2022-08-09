@@ -22,9 +22,14 @@ router.get("/getcosmetics", productController.getcosmetics)
 router.get("/updatecosmetic", productController.updatecosmetic)
 router.get("/deletecosmetic", productController.deletecosmetic)
 
-router.get("/", (req, res, next)=>{
-    res.json("hello offers")
-    console.log("this is offer products")
-    next()
-})
+
+
+router.get('/getProducts', productController.getProducts )
+router.get("/getProduct", productController.getProduct)
+
+// router.get("/", (req, res, next)=>{
+//     res.json("hello offers")
+//     console.log("this is offer products")
+//     next()
+// })
 module.exports = router

@@ -44,7 +44,7 @@ module.exports.signUp = async (req, res) => {
     );
     // save user token
     newUser.Token = token;
-    const url = `http://localhost:8000/confirmation/${token}`
+    const url = `http://localhost:5000/confirmation/${token}`
     const options = {
       from: process.env.MAILID, // sender address
       to: "lekhasaraf09@gmail.com", // list of receivers

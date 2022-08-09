@@ -1,13 +1,17 @@
 const express = require('express')
 const app = express();
+const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const userRouter = require('./routes/users')
 const userController = require('./controllers/users')
+const productController = require('./controllers/products')
 const auth = require('./middleware/auth')
 const productRouter = require('./routes/products')
 const User = require('./models/users');
-dotenv.config()
+dotenv.config();
+const DefaultData = require('./default')
+app.use(cors())
 app.use(express.json())
 const Port = process.env.PORT
 console.log(process.env.PORT)
@@ -34,14 +38,19 @@ app.get('/confirmation/:token', async (req, res) => {
     }
     //next()
 })
+DefaultData()
 app.post("/signup", userController.signUp)
 app.post("/login", userController.login)
 app.use("/users", auth, userRouter)
-app.use("/products", auth, productRouter)
+// app.get("/getProducts", productController.getProducts)
+// app.get("/getProduct", productController.getProduct)
+ app.use("/getProducts", require( "./routes/products"))
+ app.use("/getProduct",  require('./routes/products'))
+
 //app.use("/auth", authRouter)
 
 app.get('/', (req, res)=>{
-    res.json({"message":"listening to port 8000"});
+    res.json({"message":"listening to port 5000"});
     console.log("done");
 })
 app.listen(Port, () => { connect(); console.log(`connected on port ${Port}`) });

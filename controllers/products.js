@@ -1,3 +1,6 @@
+const Product = require('../models/products')
+const mongoose = require('mongoose')
+
 //Fashion CRUD
 module.exports.getfashion = (req, res)=>{
     res.json("inside getfashion controllers")
@@ -53,3 +56,25 @@ module.exports.updatecosmetic = (req, res)=>{
 module.exports.deletecosmetic = (req, res)=>{
     res.json("inside deletecosmetic controllers")
 }
+module.exports.getProducts = async (req,res) =>{
+   try {
+        const products  =  await Product.find({ });
+        res.json(products)
+        console.log(products);
+    
+   } catch (error) {
+    console.log(error);
+   }
+};
+
+module.exports.getProduct = async (req,res) =>{
+    try {
+         const product  =  await Product.findOne({ 'id': req.params.id });
+         res.json(product)
+         console.log(hey);
+     
+    } catch (error) {
+     console.log(error);
+    }
+ };
+ 
