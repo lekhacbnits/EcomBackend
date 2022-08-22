@@ -60,7 +60,7 @@ module.exports.getProducts = async (req,res) =>{
    try {
         const products  =  await Product.find({ });
         res.json(products)
-        console.log(products);
+        // console.log(products);
     
    } catch (error) {
     console.log(error);
@@ -68,13 +68,17 @@ module.exports.getProducts = async (req,res) =>{
 };
 
 module.exports.getProduct = async (req,res) =>{
+    console.log(req.params);
+
     try {
          const product  =  await Product.findOne({ 'id': req.params.id });
          res.json(product)
-         console.log(hey);
-     
+        //  
     } catch (error) {
      console.log(error);
+       
+
     }
+   
  };
  

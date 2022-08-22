@@ -4,22 +4,32 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/users')
 
 module.exports.signUp = async (req, res) => {
-  const { name, email, contact, password } = req.body;
+  const { name, email, contact, password, cpassword } = req.body;
   try {
-    if (!(name && email && contact && password)) {
+    if (!(name && email && contact && password && cpassword)) {
       res.status(400).json("All fields are required")
     }
     const oldUser = await User.findOne({ email });
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
-    encryptedPassword = await bcrypt.hash(password, 10);
+
+    else if(password !== cpassword) {
+      res.status(422).json({ error: "Password and Confirm Password Not Match" })
+  }else {
+    encryptedPassword = await bcrypt.hash(cpassword, 10);
+
     const newUser = new User({
       name: name,
       email: email.toLowerCase(),
       contact: contact,
-      password: encryptedPassword
+    //  password: password,
+      password: encryptedPassword,
+
+       cpassword:encryptedPassword
     })
+    // encryptedPassword = await bcrypt.hash(password, 10);
+
     let transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
@@ -63,12 +73,13 @@ module.exports.signUp = async (req, res) => {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       res.status(201).json(newUser);
     });
-
+  }
   } catch (err) {
     console.log(err);
   }
   // Our register logic ends here
 }
+
 
 // Our login logic starts here
 module.exports.login = async (req, res) => {

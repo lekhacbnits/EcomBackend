@@ -2,7 +2,7 @@ const  products = [
     { 
         id: 'product1',
         url: 'https://images-eu.ssl-images-amazon.com/images/I/31BMd11KciL._AC_SX184_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kapoo7k0/electric-kettle/p/6/s/pigeon-favourite-original-imafs7xhj5uwgrh4.jpeg?q=70',
+        detailUrl: 'https://images-eu.ssl-images-amazon.com/images/I/31BMd11KciL._AC_SX184_.jpg', 
         title: {
             shortTitle: 'Home & Kitchen',
             longTitle: 'Pigeon FAVOURITE Electric Kettle  (1.5 L, Silver, Black)'
@@ -20,7 +20,7 @@ const  products = [
     { 
         id: 'product2',
         url: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/Wireless/shasvijo/AUG_ART_2022/434x530_hex_1._CB630580113_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kl6wx3k0/sandwich-maker/8/r/d/sandwich-01-flipkart-smartbuy-original-imagydds4zthxt8z.jpeg?q=70',
+        detailUrl: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/Wireless/shasvijo/AUG_ART_2022/434x530_hex_1._CB630580113_.jpg', 
         title: {
             shortTitle: 'Sandwich Makers',
             longTitle: 'Flipkart SmartBuy Sandwich 01 Grill  (Black)'
@@ -38,7 +38,7 @@ const  products = [
     { 
         id: 'product3',
         url: 'https://images-eu.ssl-images-amazon.com/images/I/715Vz2m6BvL._AC_UL450_SR450,320_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kohigsw0/resistance-tube/c/s/e/new-adjustable-single-resistance-tube-multicolor-na-ajro-deal-original-imag2xg88mhmwxz5.jpeg?q=70', 
+        detailUrl: 'https://images-eu.ssl-images-amazon.com/images/I/715Vz2m6BvL._AC_UL450_SR450,320_.jpg', 
         title: {
             shortTitle: 'Fitness Gear',
             longTitle: 'AJRO DEAL New Adjustable Single Resistance Tube (Multicolor) Resistance Tube  (Multicolor)'
@@ -56,7 +56,7 @@ const  products = [
     { 
         id: 'product4',
         url: 'https://images-eu.ssl-images-amazon.com/images/I/61YRI2+SIIL._AC_UL450_SR450,320_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kll7bm80/smartwatch/c/1/n/43-mo-sw-sense-500-android-ios-molife-original-imagyzyycnpujyjh.jpeg?q=70',
+        detailUrl: 'https://images-eu.ssl-images-amazon.com/images/I/61YRI2+SIIL._AC_UL450_SR450,320_.jpg', 
         title: {
             shortTitle: 'Smart Watches',
             longTitle: 'Molife Sense 500 Smartwatch  (Black Strap, Freesize)',
@@ -74,7 +74,7 @@ const  products = [
     { 
         id: 'product5',
         url: 'https://images-eu.ssl-images-amazon.com/images/I/51QnuLIY2uL._AC_SX184_.jpg', 
-         detailUrl: 'https://rukminim1.flixcart.com/image/416/416/k3uhhu80/hair-dryer/n/m/t/nova-2800-w-professional-nhp-8220-original-imafmvwfhmzsxdrw.jpeg?q=70', 
+        detailUrl: 'https://images-eu.ssl-images-amazon.com/images/I/51QnuLIY2uL._AC_SX184_.jpg', 
         title: {
             shortTitle: 'Trimmers, Dryers & more',
             longTitle: 'Nova Professional NHP 8220 Hair Dryer  (1800 W, Multicolor)'
@@ -92,7 +92,7 @@ const  products = [
     { 
         id: 'product6',
         url: 'https://m.media-amazon.com/images/I/81iUXe9ygkL._AC_UY327_FMwebp_QL65_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kk01pjk0/fan/d/d/l/tiktik-quiet-portable-table-fan-zigma-original-imafzg7ftzuckpad.jpeg?q=70', 
+        detailUrl: 'https://m.media-amazon.com/images/I/81iUXe9ygkL._AC_UY327_FMwebp_QL65_.jpg', 
         title: {
             shortTitle: 'Table Fans',
             longTitle: 'Portable 300 mm Ultra High Speed 3 Blade Table Fan  (Black, Pack of 1)'
@@ -110,7 +110,7 @@ const  products = [
     { 
         id: 'product7',
         url: 'https://m.media-amazon.com/images/I/71-ZoZzeKiL._AC_UY327_FMwebp_QL65_.jpg', 
-        detailUrl: 'https://rukminim1.flixcart.com/image/416/416/kcgk1ow0/headphone/n/u/a/235v2-fast-charging-boat-original-imaftk6us4af7bca.jpeg?q=70', 
+        detailUrl: 'https://m.media-amazon.com/images/I/71-ZoZzeKiL._AC_UY327_FMwebp_QL65_.jpg', 
         title: {
             shortTitle: 'Headphones',
             longTitle: 'boAt Rockerz 235v2 with ASAP charging Version 5.0 Bluetooth Headset '
