@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose;
-
+const Joi = require('joi');const passwordComplexity  = require("joi-password-complexity")
 const userSchema = new Schema({
     name:{
         type:String,
@@ -39,6 +39,10 @@ contact:{
     required:true,
     unique:true,
 },
+resetLink:{
+    data:String,
+    default:''
+},
 address:{
     type:String,
     required:false
@@ -57,4 +61,27 @@ role:{
     default: "User"
 }
 })
-module.exports = mongoose.model('User', userSchema)
+
+
+// userSchema.methods.generateAuthToken = function(){
+//     const token = jwt.sign(
+//               { user_id: newUser._id, email },
+//               process.env.TOKEN_KEY,
+//               {
+//                 expiresIn: "2h",
+//               }
+//             );
+//             return token
+// }
+
+// const User = mongoose.model("user", userSchema)
+// const validate = (data) =>{
+//     const schema = Joi.object({
+//         name:Joi.string().required().label("name"),
+//         email:Joi.string().email().required().label("email"),
+//         password:passwordComplexity().required().label("password")
+//     });
+//     return schema.validate(data)
+// }
+//  module.exports = ('User',validate)
+ module.exports = mongoose.model("User", userSchema)

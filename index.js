@@ -62,7 +62,10 @@ app.use("/users", auth, userRouter)
  app.use("/getProducts", require( "./routes/products"))
  app.use("/product",  require('./routes/products'))
  app.use("/paytmpayment", require('./routes/payment'))
- app.use("/address", require('./routes/address') )
+ app.use("/address", auth, require('./routes/address') )
+ app.use("/validuser",auth, require('./routes/users') )
+ app.use("/forgetpassword",auth, require('./routes/users') )
+
 
 //app.use("/auth", authRouter)
  

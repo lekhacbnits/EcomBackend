@@ -13,23 +13,14 @@ module.exports.signUp = async (req, res) => {
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
-
-    else if(password !== cpassword) {
-      res.status(422).json({ error: "Password and Confirm Password Not Match" })
-  }else {
-    encryptedPassword = await bcrypt.hash(cpassword, 10);
-
+    encryptedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       name: name,
       email: email.toLowerCase(),
       contact: contact,
-    //  password: password,
       password: encryptedPassword,
-
-       cpassword:encryptedPassword
+      cpassword:encryptedPassword
     })
-    // encryptedPassword = await bcrypt.hash(password, 10);
-
     let transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
@@ -57,7 +48,8 @@ module.exports.signUp = async (req, res) => {
     const url = `http://localhost:5000/confirmation/${token}`
     const options = {
       from: process.env.MAILID, // sender address
-      to: "lekhasaraf09@gmail.com", // list of receivers
+      to:email,
+      //  "lekhasaraf09@gmail.com", // list of receivers
       subject: "Verify your email id ✔", // Subject line
       text: "Please click the link below to verify your email id for ecomapp", // plain text body
       html: `<a href=${url}>${url}</a>`, // html body
@@ -73,13 +65,12 @@ module.exports.signUp = async (req, res) => {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       res.status(201).json(newUser);
     });
-  }
+
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
-}
-
+//   // Our register logic ends here
+ }
 
 // Our login logic starts here
 module.exports.login = async (req, res) => {
@@ -117,6 +108,8 @@ module.exports.login = async (req, res) => {
     console.log(error)
   }
 }
+
+
 // module.exports.createUser = (req, res)=>{
 //     res.json("inside create user controllers")
 //     }
@@ -124,10 +117,65 @@ module.exports.login = async (req, res) => {
 // module.exports.updateUser = (req, res)=>{
 //    res.json("inside update user controllers")
 //     }
+module.exports.getvalidUser = async(req, res) =>{
+      try {
+        const validuserOne = await User.findOne({_id: req.user._id});
+        res.status(201).json({status:201,validuserOne });       
+      } catch (error) {
+        res.status(401).json({status:401, error})
+      }
+}
+module.exports.forgetpass = (req, res) => {
+  const {email} = req.body;
+  if(err || !user)
+{
+  res.status(400).json("user with email dpnt not exist")
+
+}  
+const token = jwt.sign(
+  { user_id: newUser._id, email },
+  process.env.RESET_LINK,
+  {
+    expiresIn: "2h",
+  }
+);
+const options = {
+  from: process.env.MAILID, // sender address
+  to:email,
+  //  "lekhasaraf09@gmail.com", // list of receivers
+  subject: "Verify your email id ✔", // Subject line
+  text: "Please click the link below to reset the password for ecomapp", // plain text body
+  html: `<a href=${url}>${url}</a>`, // html body
+}
+
+return user.updateOne({resetLink: token}, (err, success))
+  if(err){
+    return res.status(400).json({err: "reset password link error"})
+  }else {
+    transporter.sendMail(options, async (error, info) => {
+      if (error) {
+        console.log(error.message)
+        res.send(error.message)
+      }
+      console.log("Message sent: %s", info.messageId);
+      // return new user
+      // await newUser.save();
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // res.status(201).json(newUser);
+    });
+  }
+
+}
+
+
+
 
 module.exports.deleteUser = (req, res) => {
   res.json("inside delete user controllers")
 }
+
+
+
 module.exports.getUser = async (req, res) => {
   const allUsers = await User.find()
   console.log(allUsers)

@@ -6,4 +6,7 @@ const router = express.Router()
 
 router.get("/deleteuser", userController.deleteUser)
 router.get("/users", userController.getUser)
+// router.get("/validuser", userController.getvalidUser)
+// router.put("/forgetpassword", userController.forgetpass)
+
 module.exports = router
