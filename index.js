@@ -43,14 +43,14 @@ app.get('/confirmation/:token', async (req, res) => {
     }
     //next()
 })
-DefaultData()
+//DefaultData()
 
 app.post("/signup", userController.signUp)
 app.post("/login", userController.login)
 
-app.use("/users", auth, userRouter)
-// app.get("/getProducts", productController.getProducts)
-// app.get("/getProduct", productController.getProduct)
+app.use("/users",  userRouter)
+ app.use("/carts", require("./routes/cart"))
+ //app.use("/cart", productController.getProduct)
  app.use("/getProducts", require( "./routes/products"))
  app.use("/product",  require('./routes/products'))
  app.use("/paytmpayment", require('./routes/payment'))

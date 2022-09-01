@@ -185,8 +185,10 @@ module.exports.resetPass = async (req,res) =>{
   }
 }
 
-module.exports.deleteUser = (req, res) => {
-  res.json("inside delete user controllers")
+module.exports.updateUser = async(req, res) => {
+  const { name,  contact,  address, zipcode } = req.body;
+  await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
+  res.json("updated user document")
 }
 
 module.exports.getUser = async (req, res) => {

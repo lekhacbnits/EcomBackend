@@ -6,8 +6,9 @@ const router = express.Router()
 
 //router.post("/signup", userController.signUp)
 
-router.get("/deleteuser", userController.deleteUser)
+//router.get("/deleteuser", userController.deleteUser)
 router.get("/users", userController.getUser)
+router.post("/updateUser", userController.updateUser)
  router.get("/loggedUser", userController.loggedUser)
 router.post("/resetPassEmail", userController.resetPassEmail)
 router.post("/resetPass/:_id/:token", userController.resetPass)
