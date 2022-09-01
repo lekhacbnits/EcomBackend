@@ -109,72 +109,85 @@ module.exports.login = async (req, res) => {
   }
 }
 
-
-// module.exports.createUser = (req, res)=>{
-//     res.json("inside create user controllers")
-//     }
-
-// module.exports.updateUser = (req, res)=>{
-//    res.json("inside update user controllers")
-//     }
-module.exports.getvalidUser = async(req, res) =>{
-      try {
-        const validuserOne = await User.findOne({_id: req.user._id});
-        res.status(201).json({status:201,validuserOne });       
-      } catch (error) {
-        res.status(401).json({status:401, error})
-      }
-}
-module.exports.forgetpass = (req, res) => {
-  const {email} = req.body;
-  if(err || !user)
-{
-  res.status(400).json("user with email dpnt not exist")
-
-}  
-const token = jwt.sign(
-  { user_id: newUser._id, email },
-  process.env.RESET_LINK,
-  {
-    expiresIn: "2h",
-  }
-);
-const options = {
-  from: process.env.MAILID, // sender address
-  to:email,
-  //  "lekhasaraf09@gmail.com", // list of receivers
-  subject: "Verify your email id ✔", // Subject line
-  text: "Please click the link below to reset the password for ecomapp", // plain text body
-  html: `<a href=${url}>${url}</a>`, // html body
+module.exports.loggedUser = async (req,res)=>{
+  res.send({"userdata":req.rootUser})
 }
 
-return user.updateOne({resetLink: token}, (err, success))
-  if(err){
-    return res.status(400).json({err: "reset password link error"})
+module.exports.resetPassEmail = async (req,res)=>{
+  const {email}  = req.body
+
+  if(email){
+    const user = await User.findOne({email:email})
+    {
+      const secret = user._id + process.env.TOKEN_KEY
+      token = jwt.sign({user_id: user._id}, secret, {expiresIn:'5d'})
+      const link= `http://localhost:3000/ForgetPass/${user._id}/${token}`
+      console.log(link)
+
+      let transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        // tls: {
+        //   rejectUnauthorized: true,
+        //   minVersion: "TLSv1.2"
+        // },
+        auth: {
+          user: process.env.MAILID, // generated ethereal user
+          pass: process.env.PASS, // generated ethereal password
+        },
+      });
+
+      const options =  ({
+        from: process.env.MAILID, // sender address
+        to: email,
+        //  "lekhasaraf09@gmail.com", // list of receivers
+        subject: "Verify your email id ✔", // Subject line
+        text: "Please click the link below to verify your email id for ecomapp", // plain text body
+        html:`<a href=${link}> Click here </a> to reset your password`
+      })
+      transporter.sendMail(options, async (error, info) => {
+        if (error) {
+          console.log(error.message)
+          res.send(error.message)
+        }
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+      });
+      res.send({"infor":options, "message": "please check your inbox" })
+
+    }
   }else {
-    transporter.sendMail(options, async (error, info) => {
-      if (error) {
-        console.log(error.message)
-        res.send(error.message)
-      }
-      console.log("Message sent: %s", info.messageId);
-      // return new user
-      // await newUser.save();
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      // res.status(201).json(newUser);
-    });
+    res.send("email does't exist")
   }
-
 }
+module.exports.resetPass = async (req,res) =>{
+  const {password, cpassword} = req.body
+  const { _id, token } = req.params
+  const user = await User.findById(_id)
+  const newsecret = user._id + process.env.TOKEN_KEY
+  try {
+    jwt.verify(token, newsecret)
+    if(password && cpassword){
 
-
-
+    if(password !== cpassword){
+      res.send("password and conferm password should be matched")
+    }else{
+      const salt = await bcrypt.genSalt(10)
+      const newhashPassword = await bcrypt.hash(password, salt )
+      await User.findByIdAndUpdate ((user._id), {$set:{password:newhashPassword}})
+      console.log(password)
+      res.send("password updated successfully")
+    }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 module.exports.deleteUser = (req, res) => {
   res.json("inside delete user controllers")
 }
-
-
 
 module.exports.getUser = async (req, res) => {
   const allUsers = await User.find()

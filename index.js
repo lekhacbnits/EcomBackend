@@ -8,6 +8,7 @@ const userController = require('./controllers/users')
 const productController = require('./controllers/products')
 const auth = require('./middleware/auth')
 const productRouter = require('./routes/products')
+
 const User = require('./models/users');
 const  {MONGODB} = require ('./config/db')
 
@@ -44,15 +45,6 @@ app.get('/confirmation/:token', async (req, res) => {
 })
 DefaultData()
 
-
-
-
-
-
-
-
-
-
 app.post("/signup", userController.signUp)
 app.post("/login", userController.login)
 
@@ -63,11 +55,13 @@ app.use("/users", auth, userRouter)
  app.use("/product",  require('./routes/products'))
  app.use("/paytmpayment", require('./routes/payment'))
  app.use("/address", auth, require('./routes/address') )
- app.use("/validuser",auth, require('./routes/users') )
- app.use("/forgetpassword",auth, require('./routes/users') )
+ app.use("/loggedUser",auth, require('./routes/users') )
+ app.use("/resetPassEmail", require('./routes/users') )
+ app.use("/resetPass", require('./routes/users') )
+ app.use("/updateuserdata", require('./routes/users') )
 
 
-//app.use("/auth", authRouter)
+// app.use("/", authRouter)
  
 
 
