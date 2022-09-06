@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose;
-//const Joi = require('joi');const passwordComplexity  = require("joi-password-complexity")
+const {Schema} = mongoose;
 const userSchema = new Schema({
     name: {
         type: String,
@@ -15,78 +14,90 @@ const userSchema = new Schema({
         minlength: 4,
         max: 10,
     },
-    email: {
-        type: String,
-        required: true,
-        minlength: 4,
-        max: 10,
-    },
-    gender: {
-        type: String,
-    },
-    address: {
-        type: String,
-    },
-    address1: {
-        type: String,
-    },
-    address2: {
-        type: String,
-    },
-    city: {
-        type: String,
-    },
-    country: {
-        type: String,
-    },
-    state: {
-        type: String,
-    },
-    zipcode: {
-        type: String,
-    },
-    housenumber: {
-        type: String,
-    },
-    cardName: {
-        type: String,
-    },
-    cardNumber: {
-        type: String,
-    },
-    cardExp: {
-        type: String,
-    },
-    confirmed: {
-        type: Boolean,
-        default: false
-    },
-    contact: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    resetLink: {
-        data: String,
-        default: ''
-    },
-    address: {
-        type: String,
-        required: false
-    },
-    date: { type: Date, default: Date.now },
-    photo: {
-        type: Buffer,
-        required: false
-    },
-    Token: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        default: "User"
-    }
+    
+email:{
+    type:String,
+    required: true,
+    trim:true,
+    min:5,
+    max:20,
+    unique:true,
+},
+confirmed:{
+    type:Boolean,
+    default:false
+},
+contact:{
+    type :String,
+    required:true,
+    unique:true,
+},
+gender: {
+    type: String,
+},
+address: {
+    type: String,
+},
+address1: {
+    type: String,
+},
+address2: {
+    type: String,
+},
+city: {
+    type: String,
+},
+country: {
+    type: String,
+},
+state: {
+    type: String,
+},
+zipcode: {
+    type: String,
+},
+housenumber: {
+    type: String,
+},
+cardName: {
+    type: String,
+},
+cardNumber: {
+    type: String,
+},
+cardExp: {
+    type: String,
+},
+confirmed: {
+    type: Boolean,
+    default: false
+},
+contact: {
+    type: String,
+    required: true,
+    unique: true,
+},
+resetLink: {
+    data: String,
+    default: ''
+},
+address: {
+    type: String,
+    required: false
+},
+date: { type: Date, default: Date.now },
+photo: {
+    type: Buffer,
+    required: false
+},
+Token: {
+    type: String,
+    required: true
+},
+role: {
+    type: String,
+    default: "User"
+}
 })
 
 

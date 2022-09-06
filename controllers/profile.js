@@ -3,46 +3,30 @@ const nodemailer = require("nodemailer");
 const bcrypt = require('bcryptjs');
 const User = require('../models/users')
 
-module.exports.updateuserdata = async (req,res)=>{
-    const id = req.query.id
-    const user = await User.findById({id:_id})
-
-      if(user){
-        user.name = req.body.name || user.name;
-        user.email = req.body.email || user.email;
-        user.contact = req.body.email || user.contact;
-    
-    const updateUser = await user.save();
-
-    res.json({
-        _id:updateUser._id,
-        name: updateUser.name,
-        email:updateUser.email,
-        contact: updateUser.contact 
-
+module.exports.updateProfile = async (req,res)=>{
+    const id = req.params.id
+//    console.log(id)
+   User.findOneAndUpdate({_id:req.params.id}, {
+    $set:{
+       name: req.body.name,
+       email: req.body.email,
+      contact:req.body.contact
+    }
+   }).then(result =>{
+    res.status(200).json({
+        updated_products: result
     })
-}else{
-    res.status(404);
-    throw new Error("User Not Found")
+   }).catch(err=>{
+    console.log(err)
+    res.status(500).json({
+        error:err
+    })
+   })
 }
 
 
-
-// const newData = {
-//  name : req.body.name,
-//  email: req.body.email,
-//  conatct: req.body.contact 
+// module.exports.updateUser = async(req, res) => {
+//   const { name,  contact,  address, zipcode } = req.body;
+//   await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
+//   res.json("updated user document")
 // }
-
-// const user = await User.findByIdAndUpdate(req.user._id, newData, {
-//     new:true,
-//     runValidators:true,
-//     useFindAndMondify: false
-// })
-// res.status(200).json({
-//     succes:true
-// })
-
-
-
-}
