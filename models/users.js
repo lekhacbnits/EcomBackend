@@ -15,6 +15,12 @@ const userSchema = new Schema({
         minlength: 4,
         max: 10,
     },
+    email: {
+        type: String,
+        required: true,
+        minlength: 4,
+        max: 10,
+    },
     gender: {
         type: String,
     },

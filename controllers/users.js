@@ -84,7 +84,7 @@ module.exports.login = async (req, res) => {
     // Validate if user exist in our database
     const user = await User.findOne({ email });
     if (!user)
-      res.status(400).send("please register first")
+      res.status(200).send("please register first")
     //Validate if the email is verified
     if (!(user.confirmed)) {
       res.status(400).send("Please verify your email first")
