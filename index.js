@@ -51,21 +51,30 @@ app.post("/login", userController.login)
 app.use("/users", auth, userRouter)
 // app.get("/getProducts", productController.getProducts)
 // app.get("/getProduct", productController.getProduct)
- app.use("/getProducts", require( "./routes/products"))
- app.use("/product",  require('./routes/products'))
+ app.use("/getProducts", productRouter)
+ app.use("/product",  productRouter)
  app.use("/paytmpayment", require('./routes/payment'))
+ app.use("/paypal", require('./routes/payment'))
+ app.use("/paypal", require('./routes/payment'))
+ app.use("/paypal", require('./routes/payment'))
+
  app.use("/address", auth, require('./routes/address') )
  app.use("/loggedUser",auth, require('./routes/users') )
  app.use("/resetPassEmail", require('./routes/users') )
  app.use("/resetPass", require('./routes/users') )
- app.use("/updateuserdata", require('./routes/users') )
+//  app.use("/updateuserdata", require('./routes/users') )
+ app.use("/updateProfile", require('./routes/users') )
+ app.use("/cart", require('./routes/cart') )
+ app.use("/deletecart", require('./routes/cart') )
 
 
 // app.use("/", authRouter)
+//  paypal.configure({
+//     "mode":'sandbox',
+//     "client_id":"AY4QlT_0rkLM7PG1VGiKiC2WsMsvfW6WV8wnQFNBkOWKb6bnN628ZDCSp7zUnGRIqzOqXlLO4XSij3c-",
+//     "client_secret":"EMs6S61fINBvdeiNjOJUtwRhEs8edbgyUL36dEm8qRquWjE6XmAHPjO34BR0JQS_2gZaSf_KQ6GoXbhv"
+//  })
  
-
-
-
 app.get('/', (req, res)=>{
     res.json({"message":"listening to port 5000"});
     console.log("done");

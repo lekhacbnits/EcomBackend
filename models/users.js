@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose;
-const Joi = require('joi');const passwordComplexity  = require("joi-password-complexity")
 const userSchema = new Schema({
     name:{
         type:String,
@@ -39,25 +38,70 @@ contact:{
     required:true,
     unique:true,
 },
-resetLink:{
-    data:String,
-    default:''
+gender: {
+    type: String,
 },
-address:{
-    type:String,
-    required:false
+address: {
+    type: String,
 },
-date:{ type: Date, default: Date.now },
-photo:{
-    type:Buffer,
-    required:false
+address1: {
+    type: String,
 },
-Token:{
-    type:String,
-    required:true
+address2: {
+    type: String,
 },
-role:{
-    type:String,
+city: {
+    type: String,
+},
+country: {
+    type: String,
+},
+state: {
+    type: String,
+},
+zipcode: {
+    type: String,
+},
+housenumber: {
+    type: String,
+},
+cardName: {
+    type: String,
+},
+cardNumber: {
+    type: String,
+},
+cardExp: {
+    type: String,
+},
+confirmed: {
+    type: Boolean,
+    default: false
+},
+contact: {
+    type: String,
+    required: true,
+    unique: true,
+},
+resetLink: {
+    data: String,
+    default: ''
+},
+address: {
+    type: String,
+    required: false
+},
+date: { type: Date, default: Date.now },
+photo: {
+    type: Buffer,
+    required: false
+},
+Token: {
+    type: String,
+    required: true
+},
+role: {
+    type: String,
     default: "User"
 }
 })

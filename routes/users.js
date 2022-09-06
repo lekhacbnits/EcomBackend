@@ -11,6 +11,7 @@ router.get("/users", userController.getUser)
  router.get("/loggedUser", userController.loggedUser)
 router.post("/resetPassEmail", userController.resetPassEmail)
 router.post("/resetPass/:_id/:token", userController.resetPass)
-router.post("/updateuserdata/:_id/:token", profileController.updateuserdata)
+// router.get("/edit", profileController.editloading)
+router.put("/:id", profileController.updateProfile)
 
 module.exports = router
