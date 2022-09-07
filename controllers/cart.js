@@ -35,10 +35,11 @@ module.exports.addCart = async (req,res) =>{
  };
 
  module.exports.deleteCartItem = async (req,res) =>{
-    console.log(req.body, Cart, Product);
+   //  console.log(req.body, Cart, Product);
     try {
-        // const product  =  await Product.findOne({ '_id': req.body.id });
-         const cart  =  await Cart.deleteOne({"_id":req.body.id})   
+         const CartId  =  await Cart.find({ productId: req.body.productId, userId: req.body.userId },{_id:1});
+         const cart  =  await Cart.deleteOne({"_id":CartId})   
+        console.log("CartId:",cart)
          res.json(cart)
     } catch (error) {
      console.log(error);
