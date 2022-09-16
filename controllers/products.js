@@ -1,7 +1,14 @@
 const Product = require('../models/products')
+const express = require('express')
+const jwt = require("jsonwebtoken");
+const ErrorHandler = require('../utils/errorhandler');
+const config = process.env;
 const catchAsyncErrors = require('../middleware/catchAsyncError')
-const ErrorHandler = require('../utils/errorhandler')
 const ApiFeatures = require('../utils/apifeatures')
+const adminAuth = require('../middleware/adminAuth')
+const User = require('../models/users')
+
+// const adminRole = require('../middleware/role')
 //const mongoose = require('mongoose')
 
 //Fashion CRUD
@@ -60,12 +67,17 @@ const ApiFeatures = require('../utils/apifeatures')
 //     res.json("inside deletecosmetic controllers")
 // }
 
-
 //create product api --Admin
 module.exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
-//    req.body.user = req.rootUser.user_id
+    const authHeader = req.headers.authorization
+    const token = authHeader.split(" ")[1]
+  
+    const varifytoken = jwt.verify(token,config.TOKEN_KEY );
+    const rootUser = await User.findOne({id: varifytoken.user_id})
+    req.body.user = rootUser._id
+
     const product = await Product.create(req.body);
-   res.status(201).json({
+    res.status(201).json({
        success:true,
        product
    });

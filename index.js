@@ -69,8 +69,8 @@ app.use("/users",  userRouter)
  app.use("/createproducts", adminAuth, require( "./routes/products") )
  app.use("/getallproducts",  require( "./routes/products"))
  app.use("/productdetails",  require('./routes/products'))
-app.use("/updateProduct",  require('./routes/products'))
- app.use("/deleteProduct",  require('./routes/products'))
+app.use("/updateProduct", adminAuth,  require('./routes/products'))
+ app.use("/deleteProduct", adminAuth, require('./routes/products'))
 
 
  //payment
@@ -91,7 +91,7 @@ app.use("/updateProduct",  require('./routes/products'))
 
 
  //order
- app.use("/order",  require('./routes/order') )
+ app.use("/order",  auth , require('./routes/order') )
  app.use("/singleOrders",  require('./routes/order') )
  app.use("/myorders",  require('./routes/order') )
  app.use("/allorders",  require('./routes/order') )

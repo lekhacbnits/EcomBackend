@@ -9,25 +9,13 @@ const tokenvar = async(req,res,next) =>{
 
   const authHeader = req.headers.authorization
   console.log(authHeader)
-  // req.headers
   const token = authHeader.split(" ")[1]
-  // 
   const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-  // console.log( "token", varifytoken)
   const rootUser = await User.findOne({id: varifytoken.user_id})
-  console.log(rootUser)
   if(!rootUser){
     throw new Error("user not found")}
-    res.status(200).json(rootUser)
-
-    console.log("rootUser.role", rootUser.role)
-     
-    if(rootUser.role == "Admin" ){
-        next()
-      }else{
-        res.status(403).send("Access denied")
-      }
-
+    res.status(200).json(rootUser)     
+  
   next()
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})

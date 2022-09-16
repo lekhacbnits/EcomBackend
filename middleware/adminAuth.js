@@ -17,11 +17,12 @@ const adminAuth = async(req,res,next) =>{
 
      
     if(rootUser.role === "Admin" ){
-        res.status(200).json(rootUser)
+        // res.status(200).json(rootUser)
         next()
       }else{
         res.status(401).json({status:401, message:"Access Denied"})
       }
+     
 
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})
