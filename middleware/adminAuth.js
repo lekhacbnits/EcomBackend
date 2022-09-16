@@ -4,38 +4,31 @@ const jwt = require("jsonwebtoken");
 const ErrorHandler = require('../utils/errorhandler');
 const config = process.env;
 
-const tokenvar = async(req,res,next) =>{
+const adminAuth = async(req,res,next) =>{
  try {
 
   const authHeader = req.headers.authorization
-  console.log(authHeader)
-  // req.headers
   const token = authHeader.split(" ")[1]
-  // 
+
   const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-  // console.log( "token", varifytoken)
   const rootUser = await User.findOne({id: varifytoken.user_id})
-  console.log(rootUser)
   if(!rootUser){
     throw new Error("user not found")}
-    res.status(200).json(rootUser)
 
-    console.log("rootUser.role", rootUser.role)
      
-    if(rootUser.role == "Admin" ){
+    if(rootUser.role === "Admin" ){
+        res.status(200).json(rootUser)
         next()
       }else{
-        res.status(403).send("Access denied")
+        res.status(401).json({status:401, message:"Access Denied"})
       }
 
-  next()
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})
 }
 }
 
-
-module.exports = tokenvar
+module.exports = adminAuth
 
 
 

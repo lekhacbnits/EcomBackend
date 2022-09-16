@@ -2,10 +2,13 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const bcrypt = require('bcryptjs');
 const User = require('../models/users')
+const catchAsyncErrors = require('../middleware/catchAsyncError')
+const ErrorHandler = require('../utils/errorhandler')
+const sendToken = require('../utils/jwtToken')
 
-module.exports.signUp = async (req, res) => {
+module.exports.signUp = catchAsyncErrors(async (req, res) => {
   const { name, email, contact, password, cpassword } = req.body;
-  try {
+  // try {
     if (!(name && email && contact && password && cpassword)) {
       res.status(400).json("All fields are required")
     }
@@ -19,7 +22,11 @@ module.exports.signUp = async (req, res) => {
       email: email.toLowerCase(),
       contact: contact,
       password: encryptedPassword,
-      cpassword:encryptedPassword
+      cpassword:encryptedPassword,
+      avatar: {
+        public_id: "this is a sample id",
+        url:"profile url"
+      }
     })
     let transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
@@ -66,28 +73,36 @@ module.exports.signUp = async (req, res) => {
       res.status(201).json(newUser);
     });
 
-  } catch (err) {
-    console.log(err);
-  }
-//   // Our register logic ends here
- }
+  // } 
+  // catch (err) {
+  //   console.log(err);
+  // }
+   // Our register logic ends here
+}
+ )
 
 // Our login logic starts here
-module.exports.login = async (req, res) => {
-  try {
+module.exports.login = catchAsyncErrors(async (req, res, next) => {
+  // try {
     // Get user input
     const { email, password } = req.body;
     // Validate user input
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      return next(new ErrorHandler("All input is required", 400))
+      // res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
     const user = await User.findOne({ email });
     if (!user)
-      res.status(200).send("please register first")
+    return next(new ErrorHandler("please register first", 200))
+
+      // res.status(200).send("please register first")
     //Validate if the email is verified
+    
     if (!(user.confirmed)) {
-      res.status(400).send("Please verify your email first")
+      return next(new ErrorHandler("Please verify your email first", 400))
+
+      // res.status(400).send("Please verify your email first")
     }
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
@@ -102,18 +117,37 @@ module.exports.login = async (req, res) => {
       user.Token = token;
 
       // user
+    //  await sendToken(user, 201, res)
       res.status(200).json(user);
+
+      const isPasswordMatched = await User.comparePassword(password);
+
+      if(!isPasswordMatched){
+        return next(new ErrorHandler("Invalid Email  or password", 400))
+      }
     }
-  } catch (error) {
-    console.log(error)
-  }
-}
+  // } catch (error) {
+  //   console.log(error)
+  // }
+})
 
-module.exports.loggedUser = async (req,res)=>{
-  res.send({"userdata":req.rootUser})
+module.exports.loggedUser = catchAsyncErrors(async (req,res)=>{
+  res.send({"userdata":rootUser.user_id})
+  console.log('req.rootUser', rootUser)
 }
+)
 
-module.exports.resetPassEmail = async (req,res)=>{
+//get user detaols
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user_id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+module.exports.resetPassEmail = catchAsyncErrors(async (req,res)=>{
   const {email}  = req.body
 
   if(email){
@@ -160,14 +194,15 @@ module.exports.resetPassEmail = async (req,res)=>{
   }else {
     res.send("email does't exist")
   }
-}
-module.exports.resetPass = async (req,res) =>{
+})
+module.exports.resetPass = catchAsyncErrors(async (req,res) =>{
   const {password, cpassword} = req.body
   const { _id, token } = req.params
   const user = await User.findById(_id)
   const newsecret = user._id + process.env.TOKEN_KEY
-  try {
+  // try {
     jwt.verify(token, newsecret)
+
     if(password && cpassword){
 
     if(password !== cpassword){
@@ -180,19 +215,19 @@ module.exports.resetPass = async (req,res) =>{
       res.send("password updated successfully")
     }
     }
-  } catch (error) {
-    console.log(error)
-  }
-}
+  // } catch (error) {
+  //   console.log(error)
+  // }
+})
 
-module.exports.updateUser = async(req, res) => {
+module.exports.updateUser = catchAsyncErrors(async(req, res) => {
   const { name,  contact,  address, zipcode } = req.body;
   await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
   res.json("updated user document")
-}
+})
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = catchAsyncErrors(async (req, res) => {
   const allUsers = await User.find()
   console.log(allUsers)
   res.json(allUsers)
-}
+})

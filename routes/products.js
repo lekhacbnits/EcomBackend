@@ -1,6 +1,8 @@
 const express = require('express')
-const productController = require('../controllers/products.js')
 const router = express.Router()
+const ProductController = require('../controllers/products.js')
+const authorisedRole = require('../middleware/role')
+
 
 // router.get("/getfashion", productController.getfashion)
 // router.get("/addfashion", productController.addfashion)
@@ -22,8 +24,18 @@ const router = express.Router()
 // router.get("/updatecosmetic", productController.updatecosmetic)
 // router.get("/deletecosmetic", productController.deletecosmetic)
 
-router.get('/getProducts', productController.getProducts )
-router.get("/:id", productController.getProduct)
+
+//products section
+router.post('/createproducts', ProductController.createProduct)
+router.get('/getallproducts', ProductController.getAllProducts)
+router.get('/product/:id', ProductController.getproductdetails)
+router.put('/updateProduct/:id', ProductController.updateProduct)
+router.delete('/deleteProduct/:id', ProductController.deleteProduct)
+
+
+
+// router.get('/getProducts', ProductController.getProducts )
+// router.get("/:id", ProductController.getProduct)
 
 // router.get("/", (req, res, next)=>{
 //     res.json("hello offers")

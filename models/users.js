@@ -1,27 +1,28 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose;
+const validator = require('validator')
 const userSchema = new Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, "Please Enter your name"],
         trim: true,
-        min: 0,
-        max: 20,
+        maxlength: [30, "Name cannot exceed 30 charactors"],
+        minLenght: [4, "Your name cannot bi less then 4 chararctors"],
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "Please Enter your password"],
         minlength: 4,
         max: 10,
+        select:true
     },
     
 email:{
     type:String,
-    required: true,
+    required: [true, "Please Enter your email"],
     trim:true,
-    min:5,
-    max:20,
     unique:true,
+    validate : [validator.isEmail, "Please enter a valid email"]
 },
 confirmed:{
     type:Boolean,
@@ -32,6 +33,17 @@ contact:{
     required:true,
     unique:true,
 },
+avatar: {
+    public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+},
+
 gender: {
     type: String,
 },
@@ -96,8 +108,8 @@ Token: {
 },
 role: {
     type: String,
-    default: "User"
-}
+    default: "User",
+  },
 })
 
 

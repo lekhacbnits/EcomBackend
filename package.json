@@ -13,6 +13,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
+    "cookies-parser": "^1.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -24,6 +25,7 @@
     "nodemailer": "^6.7.7",
     "nodemon": "^2.0.19",
     "paypal-rest-sdk": "^1.8.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0"
   }
 }
