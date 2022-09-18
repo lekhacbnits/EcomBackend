@@ -7,12 +7,13 @@ const router = express.Router()
 //router.post("/signup", userController.signUp)
 
 //router.get("/deleteuser", userController.deleteUser)
-router.get("/users", userController.getUser)
+router.post("/getUser", userController.getUser)
 router.post("/updateUser", userController.updateUser)
+router.post("/updatePhoto", userController.updatePicture)
  router.get("/loggedUser", userController.loggedUser)
 router.post("/resetPassEmail", userController.resetPassEmail)
 router.post("/resetPass/:_id/:token", userController.resetPass)
-// router.get("/edit", profileController.editloading)
-router.put("/:id", profileController.updateProfile)
+ router.post("/profilePhoto", profileController.profilePhoto)
+//router.put("/:id", profileController.updateProfile)
 
 module.exports = router

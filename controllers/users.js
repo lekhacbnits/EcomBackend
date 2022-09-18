@@ -100,7 +100,7 @@ module.exports.login = async (req, res) => {
       );
       // save user token
       user.Token = token;
-
+      await user.save();
       // user
       res.status(200).json(user);
     }
@@ -186,13 +186,37 @@ module.exports.resetPass = async (req,res) =>{
 }
 
 module.exports.updateUser = async(req, res) => {
-  const { name,  contact,  address, zipcode } = req.body;
-  await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
-  res.json("updated user document")
+  const { name, email, contact,  address, gender } = req.body;
+  try{
+   const updatedUser = await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, email:email, address:address, gender:gender}})
+    console.log("//////////",req.body, updatedUser)
+    res.status(200).json(updatedUser)
+  }catch(error){
+console.log('error', error)
+  }
+}
+
+module.exports.updatePicture = async(req, res) => {
+  const { id, filePath } = req.body;
+  try{
+    const updatedPicture = await User.findByIdAndUpdate((id), {$set:{photo:URL.createObjectURL(filePath)}})
+    // if(updatedPicture){
+    //   updatedPicture.photo = filePath;
+    // await updatedPicture.save()
+    console.log("picture ...............",req.body, updatedPicture)
+    res.json("updated user picture")
+    // }else{
+    //   console.log("user does not exist")
+    // res.json("user does not exist")
+    // }
+  }catch(error){
+console.log('error', error)
+  }
 }
 
 module.exports.getUser = async (req, res) => {
-  const allUsers = await User.find()
-  console.log(allUsers)
-  res.json(allUsers)
+  //console.log("req body id",req.body)
+  const loggedUser = await User.findOne( {_id: req.body.id})
+  console.log(loggedUser)
+  res.status(200).json(loggedUser)
 }

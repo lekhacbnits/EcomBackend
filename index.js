@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+
 const userRouter = require('./routes/users')
 const userController = require('./controllers/users')
 const productController = require('./controllers/products')
@@ -55,14 +56,13 @@ app.use("/users",  userRouter)
  app.use("/product",  require('./routes/products'))
  app.use("/paytmpayment", require('./routes/payment'))
  app.use("/paypal", require('./routes/payment'))
- 
-
  app.use("/address", auth, require('./routes/address') )
  app.use("/loggedUser",auth, require('./routes/users') )
  app.use("/resetPassEmail", require('./routes/users') )
  app.use("/resetPass", require('./routes/users') )
  app.use("/favourites", require('./routes/favourite') )
  app.use("/updateProfile", require('./routes/users') )
+ app.use("/user", require('./routes/users') )
  app.use("/cart", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
 
@@ -73,7 +73,7 @@ app.use("/users",  userRouter)
 //     "client_id":"AY4QlT_0rkLM7PG1VGiKiC2WsMsvfW6WV8wnQFNBkOWKb6bnN628ZDCSp7zUnGRIqzOqXlLO4XSij3c-",
 //     "client_secret":"EMs6S61fINBvdeiNjOJUtwRhEs8edbgyUL36dEm8qRquWjE6XmAHPjO34BR0JQS_2gZaSf_KQ6GoXbhv"
 //  })
- 
+
 app.get('/', (req, res)=>{
     res.json({"message":"listening to port 5000"});
     console.log("done");
