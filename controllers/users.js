@@ -29,9 +29,10 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
       }
     })
     let transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      service: process.env.SMPT_SERVICE,
+      secure: true, // true for 465, false for other ports
       // tls: {
       //   rejectUnauthorized: true,
       //   minVersion: "TLSv1.2"
@@ -52,7 +53,7 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
     );
     // save user token
     newUser.Token = token;
-    const url = `http://localhost:5000/confirmation/${token}`
+    const url = `http://localhost:8000/confirmation/${token}`
     const options = {
       from: process.env.MAILID, // sender address
       to:email,
@@ -66,10 +67,10 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
         console.log(error.message)
         res.send(error.message)
       }
-      console.log("Message sent: %s", info.messageId);
+      // console.log("Message sent: %s", info.messageId);
       // return new user
       await newUser.save();
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       res.status(201).json(newUser);
     });
 
@@ -159,9 +160,10 @@ module.exports.resetPassEmail = catchAsyncErrors(async (req,res)=>{
       console.log(link)
 
       let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        service: process.env.SMPT_SERVICE,
+        secure: true, // true for 465, false for other ports
         // tls: {
         //   rejectUnauthorized: true,
         //   minVersion: "TLSv1.2"
@@ -185,7 +187,7 @@ module.exports.resetPassEmail = catchAsyncErrors(async (req,res)=>{
           console.log(error.message)
           res.send(error.message)
         }
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
       });
       res.send({"infor":options, "message": "please check your inbox" })

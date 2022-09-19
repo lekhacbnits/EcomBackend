@@ -52,7 +52,7 @@ app.get('/confirmation/:token', async (req, res) => {
     catch (e) {
         res.send(e)
     }
-    next()
+    // next()
 })
 //DefaultData()
 
