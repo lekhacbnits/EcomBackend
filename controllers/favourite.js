@@ -30,8 +30,10 @@ module.exports.getFavourite = async (req, res) => {
 };
 
 module.exports.deleteFavouriteItem = async (req, res) => {
+    console.log("delete favourite Item")
     try {
-        const cart = await Favourite.deleteOne({ "_id": req.body.id })
+        const FavouriteId  =  await Favourite.find({ productId: req.body.productId, userId: req.body.userId },{_id:1});
+        const cart = await Favourite.deleteOne({ "_id": FavouriteId })
         res.json(cart)
     } catch (error) {
         console.log(error);
