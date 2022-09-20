@@ -8,7 +8,7 @@ const productSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, "Please Enter product Description"],
+    required: [false, "Please Enter product Description"],
   },
   price: {
     type: Number,
@@ -47,11 +47,11 @@ const productSchema = mongoose.Schema({
   },
   reviews: [
      {
-    //   user: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "User",
-    //     required: true,
-    //   },
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: false,
+      },
       name: {
         type: String,
         required: true,
@@ -70,7 +70,7 @@ const productSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   createdAt: {
     type: Date,

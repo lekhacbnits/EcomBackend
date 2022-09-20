@@ -48,7 +48,7 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
       { user_id: newUser._id, email },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "2h",
+        expiresIn: "30d",
       }
     );
     // save user token
@@ -93,7 +93,7 @@ module.exports.login = catchAsyncErrors(async (req, res, next) => {
       // res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user)
     return next(new ErrorHandler("please register first", 200))
 
@@ -111,14 +111,14 @@ module.exports.login = catchAsyncErrors(async (req, res, next) => {
         { user_id: user._id, email },
         process.env.TOKEN_KEY,
         {
-          expiresIn: "2h",
+          expiresIn: "30d",
         }
       );
       // save user token
       user.Token = token;
 
       // user
-    //  await sendToken(user, 201, res)
+      // await sendToken(user, 201, res)
       res.status(200).json(user);
 
       const isPasswordMatched = await User.comparePassword(password);
@@ -133,15 +133,18 @@ module.exports.login = catchAsyncErrors(async (req, res, next) => {
 })
 
 module.exports.loggedUser = catchAsyncErrors(async (req,res)=>{
-  res.send({"userdata":rootUser.user_id})
+  res.send({"userdata":req.rootUser})
   console.log('req.rootUser', rootUser)
 }
 )
 
-//get user detaols
+//get user details --admin
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user_id);
+  const user = await User.findById(req.params.id);
 
+  if(!user){
+    return next(new ErrorHandler(`User does not exist ${req.params.id}`))
+  }
   res.status(200).json({
     success: true,
     user,
@@ -222,14 +225,58 @@ module.exports.resetPass = catchAsyncErrors(async (req,res) =>{
   // }
 })
 
-module.exports.updateUser = catchAsyncErrors(async(req, res) => {
-  const { name,  contact,  address, zipcode } = req.body;
-  await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
-  res.json("updated user document")
-})
+// module.exports.updateUser = catchAsyncErrors(async(req, res) => {
+//   const { name,  contact,  address, zipcode } = req.body;
+//   await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, address:address, zipcode:zipcode}})
+//   res.json("updated user document")
+// })
 
+//get all user
 module.exports.getUser = catchAsyncErrors(async (req, res) => {
   const allUsers = await User.find()
   console.log(allUsers)
   res.json(allUsers)
 })
+
+
+//update user role --admin
+module.exports.updateUserByAdmin = async (req,res)=>{
+  const id = req.params.id
+//    console.log(id)
+ User.findOneAndUpdate({_id:req.params.id}, {
+  $set:{
+     name: req.body.name,
+     email: req.body.email,
+     contact:req.body.contact,
+     role:req.body.role
+  }
+ }).then(result =>{
+  res.status(200).json({
+     updated_products: result,
+     message:"User Updated successfully"
+  })
+ }).catch(err=>{
+  console.log(err)
+  res.status(500).json({
+      error:err,
+      
+  })
+ })
+}
+
+//delete user --admin
+
+exports.deleteUser = catchAsyncErrors(async(req, res,next ) =>{
+  const user = await User.findById(req.params.id)
+  if(!user){
+    return next(new ErrorHandler(`User does not exist ${req.params.id}`))
+  }
+
+  await User.remove()
+  res.status(200).json({
+    success:true,
+    message: "user deleted successfully"
+  })
+})
+
+

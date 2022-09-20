@@ -8,13 +8,16 @@ const auth = require('../middleware/auth')
 
 //router.get("/deleteuser", userController.deleteUser)
 router.get("/users", userController.getUser)
-router.post("/updateUser", userController.updateUser)
+// router.post("/updateUser", userController.updateUser)
  router.get("/loggedUser", userController.loggedUser)
- router.get("/:id", userController.getUserDetails)
+ router.get("/admin/:id", userController.getUserDetails)
 
 router.post("/resetPassEmail", userController.resetPassEmail)
 router.post("/resetPass/:_id/:token", userController.resetPass)
 // router.get("/edit", profileController.editloading)
 router.put("/:id", profileController.updateProfile)
+router.put("/admin/:id", userController.updateUserByAdmin)
+router.delete("/admin/:id", userController.deleteUser)
+
 
 module.exports = router

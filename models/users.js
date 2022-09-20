@@ -14,7 +14,7 @@ const userSchema = new Schema({
         required: [true, "Please Enter your password"],
         minlength: 4,
         max: 10,
-        select:true
+        select:false
     },
     
 email:{

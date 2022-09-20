@@ -70,7 +70,9 @@ app.use("/users",  userRouter)
  app.use("/getallproducts",  require( "./routes/products"))
  app.use("/productdetails",  require('./routes/products'))
 app.use("/updateProduct", adminAuth,  require('./routes/products'))
- app.use("/deleteProduct", adminAuth, require('./routes/products'))
+app.use("/review", auth,  require('./routes/products'))
+app.use("/reviews",  require('./routes/products'))
+app.use("/deleteProduct", adminAuth, require('./routes/products'))
 
 
  //payment
@@ -80,11 +82,15 @@ app.use("/updateProduct", adminAuth,  require('./routes/products'))
 //user
  app.use("/address", auth,  require('./routes/address') )
  app.use("/loggedUser", auth,  require('./routes/users') )
- app.use('/getUserdetails', auth, require('./routes/users') )
+ app.use("/getuser", adminAuth, require('./routes/users'))
+ app.use('/getallusers', adminAuth, require('./routes/users') )
  app.use("/resetPassEmail", require('./routes/users') )
  app.use("/resetPass", require('./routes/users') )
  app.use("/favourites", require('./routes/favourite') )
  app.use("/updateProfile", require('./routes/users') )
+ app.use("/updateUser",adminAuth, require('./routes/users') )
+ app.use("/deleteUser",adminAuth, require('./routes/users') )
+
 //  app.use("/cart", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
 

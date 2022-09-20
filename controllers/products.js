@@ -67,20 +67,24 @@ const User = require('../models/users')
 //     res.json("inside deletecosmetic controllers")
 // }
 
+
+
+
 //create product api --Admin
 module.exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
     const authHeader = req.headers.authorization
     const token = authHeader.split(" ")[1]
-  
     const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-    const rootUser = await User.findOne({id: varifytoken.user_id})
-    req.body.user = rootUser._id
-
+    const users = await User.findOne({id: varifytoken.user_id})
+    req.body.user = users._id
     const product = await Product.create(req.body);
     res.status(201).json({
        success:true,
        product
    });
+
+   await Product.save()
+   next()
 });
 
 //get products api with filter, search pagination option
@@ -145,11 +149,16 @@ module.exports.updateProduct = catchAsyncErrors(async (req,res,next) =>{
        runValidators: true,
        useFindAndModify: false,
    });
+   return next(new ErrorHandler(" not updated review", {
+    success: true,
+    product,
+}));
 
-   return res.status(200).json({
-       success: true,
-       product,
-   });
+
+//    return res.status(200).json({
+//        success: true,
+//        product,
+//    });
    
 })
 
@@ -190,3 +199,114 @@ module.exports.deleteProduct = catchAsyncErrors(async (req,res, next) =>{
    
 //  };
  
+//create new review or update the review
+module.exports.createProductReview = catchAsyncErrors(async(req, res, next)=>{
+    const authHeader = req.headers.authorization
+    const token = authHeader.split(" ")[1]
+    const varifytoken = jwt.verify(token,config.TOKEN_KEY );
+    const user = await User.findOne({id: varifytoken.user_id})
+    console.log('rootUser', user)
+    // req.body.user = rootUser._id
+    // console.log('rootUser._id', rootUser._id)
+
+    // const user = await User.findById(req.params.id);
+    // console.log('user', user)
+    const {rating, comment, productId} = req.body;
+    
+    req.body.user = user._id
+    req.body.name=  user.name
+    // const user = await User.findOne(req.ramaps.id)
+    // console.log('user', user)
+    const review = {
+      
+        user: req.body.user,
+       name: req.body.name,
+      rating: Number(rating),
+      comment,
+    };
+
+    const product = await Product.findById(productId);
+    const isReview = product.reviews.find(
+      (rev) => rev.user.toString() === req.user.toString()
+    )
+    if(isReview){
+        product.reviews.forEach((rev)=>{
+          if(rev.user.toString() ===   req.user.toString())
+          (rev.rating == rating), (rev.comment = comment)
+        });
+    }else{
+        product.reviews.push(review)
+        product.numOfReviews = product.reviews.length;
+    }
+    let avg = 0;
+    product.ratings = product.reviews.forEach((rev)=>{
+        avg+= rev.rating;
+    })
+    product.ratings = avg / product.reviews.length;
+
+    await product.save({ validateBeforeSave: false });
+  
+    return res.status(200).json({
+      success: true,
+    });
+    next()
+})
+//get product reviews
+module.exports.productReview = catchAsyncErrors(async (req,res,next)=>{
+    const product = await Product.findById(req.query.id);
+
+    if(!product){
+        return next(new ErrorHandler("Product not found", 404));
+    }
+    res.status(200).json({
+        success:true,
+        reviews:product.reviews
+    })
+})
+
+// Delete Review
+exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
+    const product = await Product.findById(req.query.productId);
+  
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+  
+    const reviews = product.reviews.filter(
+      (rev) => rev._id.toString() !== req.query.id.toString()
+    );
+  
+    let avg = 0;
+  
+    reviews.forEach((rev) => {
+      avg += rev.rating;
+    });
+  
+    let ratings = 0;
+  
+    if (reviews.length === 0) {
+      ratings = 0;
+    } else {
+      ratings = avg / reviews.length;
+    }
+  
+    const numOfReviews = reviews.length;
+  
+    await Product.findByIdAndUpdate(
+      req.query.productId,
+      {
+        reviews,
+        ratings,
+        numOfReviews,
+      },
+      {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+      }
+    );
+  
+    res.status(200).json({
+      success: true,
+    });
+  });

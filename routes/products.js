@@ -29,8 +29,10 @@ const authorisedRole = require('../middleware/role')
 router.post('/createproducts', ProductController.createProduct)
 router.get('/getallproducts', ProductController.getAllProducts)
 router.get('/product/:id', ProductController.getproductdetails)
-router.put('/updateProduct/:id', ProductController.updateProduct)
-router.delete('/deleteProduct/:id', ProductController.deleteProduct)
+router.put('/:id', ProductController.updateProduct)
+router.put('/review', ProductController.createProductReview)
+router.get('/all', ProductController.productReview)
+router.delete('/:id', ProductController.deleteProduct)
 
 
 

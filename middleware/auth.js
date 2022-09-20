@@ -8,13 +8,12 @@ const tokenvar = async(req,res,next) =>{
  try {
 
   const authHeader = req.headers.authorization
-  console.log(authHeader)
   const token = authHeader.split(" ")[1]
   const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-  const rootUser = await User.findOne({id: varifytoken.user_id})
-  if(!rootUser){
+  const users = await User.findOne({id: varifytoken.user_id})
+  if(!users){
     throw new Error("user not found")}
-    res.status(200).json(rootUser)     
+    res.status(200).json(users)     
   
   next()
  } catch (error) {
