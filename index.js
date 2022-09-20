@@ -14,7 +14,7 @@ const  {MONGODB} = require ('./config/db')
 const errorMiddleware = require('./middleware/error')
 const catchAsyncErrors = require('./middleware/catchAsyncError')
 const authorisedRole = require('./middleware/role')
-// const { isAuthenticatedUser, authorizeRoles } = require("./middleware/auth");
+const { isAuthenticatedUser, authorizeRoles } = require("./middleware/role");
 dotenv.config();
 const DefaultData = require('./default')
 DefaultData()
@@ -66,13 +66,13 @@ app.use("/users",  userRouter)
  app.use("/carts", require("./routes/cart"))
  //app.use("/cart", productController.getProduct)
  
- app.use("/createproducts", adminAuth, require( "./routes/products") )
+ app.use("/createproducts", isAuthenticatedUser, authorizeRoles("Admin"), require( "./routes/products") )
  app.use("/getallproducts",  require( "./routes/products"))
  app.use("/productdetails",  require('./routes/products'))
-app.use("/updateProduct", adminAuth,  require('./routes/products'))
-app.use("/review", auth,  require('./routes/products'))
+app.use("/updateProduct", isAuthenticatedUser, authorizeRoles("Admin"),  require('./routes/products'))
+app.use("/review", isAuthenticatedUser,  require('./routes/products'))
 app.use("/reviews",  require('./routes/products'))
-app.use("/deleteProduct", adminAuth, require('./routes/products'))
+app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/products'))
 
 
  //payment
@@ -80,16 +80,16 @@ app.use("/deleteProduct", adminAuth, require('./routes/products'))
  app.use("/paypal", require('./routes/payment'))
  
 //user
- app.use("/address", auth,  require('./routes/address') )
- app.use("/loggedUser", auth,  require('./routes/users') )
+ app.use("/address", isAuthenticatedUser,  require('./routes/address') )
+ app.use("/loggedUser",  isAuthenticatedUser,  require('./routes/users') )
  app.use("/getuser", adminAuth, require('./routes/users'))
- app.use('/getallusers', adminAuth, require('./routes/users') )
+ app.use('/getallusers', isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
  app.use("/resetPassEmail", require('./routes/users') )
  app.use("/resetPass", require('./routes/users') )
  app.use("/favourites", require('./routes/favourite') )
  app.use("/updateProfile", require('./routes/users') )
- app.use("/updateUser",adminAuth, require('./routes/users') )
- app.use("/deleteUser",adminAuth, require('./routes/users') )
+ app.use("/updateUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
+ app.use("/deleteUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
 
 //  app.use("/cart", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
@@ -97,10 +97,10 @@ app.use("/deleteProduct", adminAuth, require('./routes/products'))
 
 
  //order
- app.use("/order",  auth , require('./routes/order') )
- app.use("/singleOrders",  require('./routes/order') )
- app.use("/myorders",  require('./routes/order') )
- app.use("/allorders",  require('./routes/order') )
+ app.use("/order",  isAuthenticatedUser , require('./routes/order') )
+ app.use("/singleOrders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
+ app.use("/myorders", isAuthenticatedUser, require('./routes/order') )
+ app.use("/allorders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
 
 
 

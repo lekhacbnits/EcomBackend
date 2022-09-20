@@ -25,13 +25,14 @@ exports.newOrder = catchAsyncErrors(async(req,res,next) =>{
         shippingPrice,
         totalPrice,
         paidAt: Date.now(),
-        user:req.user_id
+        user:req.user._id
     });
 
     res.status(201).json({
         success:true,
         order
     })
+    next()
 })
 
 //user orders
@@ -53,7 +54,7 @@ exports.getSingleOrder = catchAsyncErrors(async(req,res,next) =>{
 
 //logged in user orders
 exports.myOrders = catchAsyncErrors(async(req,res, next) =>{
-    const order = await Order.find({user : req.user_id});
+    const order = await Order.find({user : req.user._id});
     if(!order){
         return next( new ErrorHandler(
             "order not fount with this id", 404))
@@ -64,7 +65,7 @@ exports.myOrders = catchAsyncErrors(async(req,res, next) =>{
     });
 })
 
-//get all oders from admin site
+//get all oders -- admin site
 exports.myOrders = catchAsyncErrors(async(req,res, next) =>{
     const order = await Order.find();
    

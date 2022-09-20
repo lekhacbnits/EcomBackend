@@ -14,15 +14,15 @@ const adminAuth = async(req,res,next) =>{
   const rootUser = await User.findOne({id: varifytoken.user_id})
   if(!rootUser){
     throw new Error("user not found")}
-
-     
+      req.user = rootUser
     if(rootUser.role === "Admin" ){
         // res.status(200).json(rootUser)
-        next()
+        req.user = rootUser
+       
       }else{
         res.status(401).json({status:401, message:"Access Denied"})
       }
-     
+      next() 
 
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})

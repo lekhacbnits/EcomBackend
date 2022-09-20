@@ -13,8 +13,14 @@ const tokenvar = async(req,res,next) =>{
   const users = await User.findOne({id: varifytoken.user_id})
   if(!users){
     throw new Error("user not found")}
-    res.status(200).json(users)     
-  
+    if(users.role === "User" ){
+      // res.status(200).json(users)
+      req.user = users
+      next()
+    }else{
+      res.status(401).json({status:401, message:"Access Denied"})
+    }  
+    
   next()
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const ErrorHandler = require('../utils/errorhandler');
 const config = process.env;
 
-module.exports.adminRole = async(req,res,next) =>{
+exports.isAuthenticatedUser = async(req,res,next) =>{
  try {
 
   const authHeader = req.headers.authorization
@@ -14,22 +14,36 @@ module.exports.adminRole = async(req,res,next) =>{
   const rootUser = await User.findOne({id: varifytoken.user_id})
   if(!rootUser){
     throw new Error("user not found")}
-
+    req.user = rootUser
      
-    if(rootUser.role === "Admin" ){
-        res.status(200).json(rootUser.role)
-        next()
-      }else{
-        res.status(401).json({status:401, message:"Access Denied"})
-      }
+    // if(rootUser.role === "Admin" ){
+    //     // res.status(200).json(rootUser.role)
+    //     req.user
+    //     next()
+    //   }else{
+    //     res.status(401).json({status:401, message:"Access Denied"})
+    //   }
      
-
+next()
  } catch (error) {
   res.status(401).json({status:401, message:"Unauthorized no token provide"})
 }
+
 }
 
-// module.exports = adminAuth
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (roles.includes(req.user.role)) {
+      return next(
+        new ErrorHandler(
+          `Role: ${req.user.role} is not allowed to access this resouce `,
+          403
+        )
+      );
+    }
 
+    next();
+  };
+};
 
-
+// module.exports = {isAuthenticatedUser, authorizeRoles}

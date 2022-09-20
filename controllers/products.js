@@ -72,11 +72,14 @@ const User = require('../models/users')
 
 //create product api --Admin
 module.exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
-    const authHeader = req.headers.authorization
-    const token = authHeader.split(" ")[1]
-    const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-    const users = await User.findOne({id: varifytoken.user_id})
-    req.body.user = users._id
+    // const authHeader = req.headers.authorization
+    // const token = authHeader.split(" ")[1]
+    // const varifytoken = jwt.verify(token,config.TOKEN_KEY );
+    // const users = await User.findOne({id: varifytoken.user_id})
+    // req.body.user = users._id
+    // console.log( req.user)
+    req.body.user = req.user._id
+    console.log('first',  req.user._id)
     const product = await Product.create(req.body);
     res.status(201).json({
        success:true,
@@ -201,37 +204,31 @@ module.exports.deleteProduct = catchAsyncErrors(async (req,res, next) =>{
  
 //create new review or update the review
 module.exports.createProductReview = catchAsyncErrors(async(req, res, next)=>{
-    const authHeader = req.headers.authorization
-    const token = authHeader.split(" ")[1]
-    const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-    const user = await User.findOne({id: varifytoken.user_id})
-    console.log('rootUser', user)
-    // req.body.user = rootUser._id
-    // console.log('rootUser._id', rootUser._id)
+  // user = req.user._id
+  console.log('req.body.user',  req.user._id)
 
-    // const user = await User.findById(req.params.id);
-    // console.log('user', user)
+
     const {rating, comment, productId} = req.body;
-    
-    req.body.user = user._id
-    req.body.name=  user.name
+  //  console.log('fir req.body.userst', req.body.user)
+  //   req.body.name= req.user.name,
+  //   req.body.user = req.user._id
     // const user = await User.findOne(req.ramaps.id)
     // console.log('user', user)
-    const review = {
-      
-        user: req.body.user,
-       name: req.body.name,
+
+    const review = {     
+       user:req.user._id,
+       name :req.user.name,
       rating: Number(rating),
       comment,
     };
 
     const product = await Product.findById(productId);
     const isReview = product.reviews.find(
-      (rev) => rev.user.toString() === req.user.toString()
+      (rev) => rev.user.toString() === req.body.user.toString()
     )
     if(isReview){
         product.reviews.forEach((rev)=>{
-          if(rev.user.toString() ===   req.user.toString())
+          if(rev.user.toString() ===   req.body.user.toString())
           (rev.rating == rating), (rev.comment = comment)
         });
     }else{
@@ -248,6 +245,7 @@ module.exports.createProductReview = catchAsyncErrors(async(req, res, next)=>{
   
     return res.status(200).json({
       success: true,
+      message: "review done"
     });
     next()
 })

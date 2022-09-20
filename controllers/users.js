@@ -133,8 +133,7 @@ module.exports.login = catchAsyncErrors(async (req, res, next) => {
 })
 
 module.exports.loggedUser = catchAsyncErrors(async (req,res)=>{
-  res.send({"userdata":req.rootUser})
-  console.log('req.rootUser', rootUser)
+  res.send({"userdata":req.user})
 }
 )
 
@@ -232,7 +231,7 @@ module.exports.resetPass = catchAsyncErrors(async (req,res) =>{
 // })
 
 //get all user
-module.exports.getUser = catchAsyncErrors(async (req, res) => {
+module.exports.getallUser = catchAsyncErrors(async (req, res) => {
   const allUsers = await User.find()
   console.log(allUsers)
   res.json(allUsers)
