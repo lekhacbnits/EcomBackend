@@ -16,100 +16,89 @@ const userSchema = new Schema({
         max: 10,
         select:false
     },
-    
-email:{
-    type:String,
-    required: [true, "Please Enter your email"],
-    trim:true,
-    unique:true,
-    validate : [validator.isEmail, "Please enter a valid email"]
-},
-confirmed:{
-    type:Boolean,
-    default:false
-},
-contact:{
-    type :String,
-    required:true,
-    unique:true,
-},
-avatar: {
-    public_id: {
+    email: {
         type: String,
         required: true,
-      },
-      url: {
+        trim: true,
+        min: 5,
+        max: 20,
+        unique: true,
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
+    contact: {
         type: String,
         required: true,
-      },
-},
-
-gender: {
-    type: String,
-},
-address: {
-    type: String,
-},
-address1: {
-    type: String,
-},
-address2: {
-    type: String,
-},
-city: {
-    type: String,
-},
-country: {
-    type: String,
-},
-state: {
-    type: String,
-},
-zipcode: {
-    type: String,
-},
-housenumber: {
-    type: String,
-},
-cardName: {
-    type: String,
-},
-cardNumber: {
-    type: String,
-},
-cardExp: {
-    type: String,
-},
-confirmed: {
-    type: Boolean,
-    default: false
-},
-contact: {
-    type: String,
-    required: true,
-    unique: true,
-},
-resetLink: {
-    data: String,
-    default: ''
-},
-address: {
-    type: String,
-    required: false
-},
-date: { type: Date, default: Date.now },
-photo: {
-    type: Buffer,
-    required: false
-},
-Token: {
-    type: String,
-    required: true
-},
-role: {
-    type: String,
-    default: "User",
-  },
+        unique: true,
+    },
+    gender: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    address1: {
+        type: String,
+    },
+    address2: {
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
+    zipcode: {
+        type: String,
+    },
+    housenumber: {
+        type: String,
+    },
+    cardName: {
+        type: String,
+    },
+    cardNumber: {
+        type: String,
+    },
+    cardExp: {
+        type: String,
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
+    contact: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    resetLink: {
+        data: String,
+        default: ''
+    },
+    address: {
+        type: String,
+        required: false
+    },
+    date: { type: Date, default: Date.now },
+    photo: {
+        type: String,
+        default:'/Image/user1.jpg'
+    },
+    Token: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        default: "User"
+    }
 })
 
 

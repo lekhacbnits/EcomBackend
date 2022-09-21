@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+
 const userRouter = require('./routes/users')
 const userController = require('./controllers/users')
 const productController = require('./controllers/products')
@@ -92,6 +93,8 @@ app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require(
  app.use("/deleteUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
 
 //  app.use("/cart", require('./routes/cart') )
+ app.use("/user", require('./routes/users') )
+ app.use("/cart", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
 
 
@@ -116,17 +119,6 @@ app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require(
 //     "client_secret":"EMs6S61fINBvdeiNjOJUtwRhEs8edbgyUL36dEm8qRquWjE6XmAHPjO34BR0JQS_2gZaSf_KQ6GoXbhv"
 //  })
 
-//middlewares for errors
-app.use(errorMiddleware)
-app.use(catchAsyncErrors)
-
- process.on("unhandled Rejection", (err) =>{
-    console.log('Error', `${err.message}`)
-    console.log('shutting down server due to unhandled rejections')
-    server.cloe(()=>{
-        process.exit(1);
-    })
-})
 app.get('/', (req, res)=>{
     res.json({"message":"listening to port 8000"});
     console.log("done");

@@ -116,7 +116,7 @@ module.exports.login = catchAsyncErrors(async (req, res, next) => {
       );
       // save user token
       user.Token = token;
-
+      await user.save();
       // user
       // await sendToken(user, 201, res)
       res.status(200).json(user);
@@ -279,3 +279,38 @@ exports.deleteUser = catchAsyncErrors(async(req, res,next ) =>{
 })
 
 
+module.exports.updateUser = async(req, res) => {
+  const { name, email, contact,  address, gender } = req.body;
+  try{
+   const updatedUser = await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, email:email, address:address, gender:gender}})
+    console.log("//////////",req.body, updatedUser)
+    res.status(200).json(updatedUser)
+  }catch(error){
+console.log('error', error)
+  }
+}
+
+module.exports.updatePicture = async(req, res) => {
+  const { id, filePath } = req.body;
+  try{
+    const updatedPicture = await User.findByIdAndUpdate((id), {$set:{photo:URL.createObjectURL(filePath)}})
+    // if(updatedPicture){
+    //   updatedPicture.photo = filePath;
+    // await updatedPicture.save()
+    console.log("picture ...............",req.body, updatedPicture)
+    res.json("updated user picture")
+    // }else{
+    //   console.log("user does not exist")
+    // res.json("user does not exist")
+    // }
+  }catch(error){
+console.log('error', error)
+  }
+}
+
+module.exports.getUser = async (req, res) => {
+  //console.log("req body id",req.body)
+  const loggedUser = await User.findOne( {_id: req.body.id})
+  console.log(loggedUser)
+  res.status(200).json(loggedUser)
+}
