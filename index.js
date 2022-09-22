@@ -17,8 +17,8 @@ const catchAsyncErrors = require('./middleware/catchAsyncError')
 const authorisedRole = require('./middleware/role')
 const { isAuthenticatedUser, authorizeRoles } = require("./middleware/role");
 dotenv.config();
-const DefaultData = require('./default')
-DefaultData()
+// const DefaultData = require('./default')
+// DefaultData()
 app.use(cors())
 app.use(express.json())
 const Port = process.env.PORT
