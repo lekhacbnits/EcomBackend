@@ -19,10 +19,11 @@ const { isAuthenticatedUser, authorizeRoles } = require("./middleware/role");
 dotenv.config();
 // const DefaultData = require('./default')
 // DefaultData()
+
+
 app.use(cors())
 app.use(express.json())
 const Port = process.env.PORT
-console.log(process.env.PORT)
 process.on("unhandled exception", (err) =>{
     console.log('Error', `${err.message}`)
     console.log('shutting down server due to unhandled exception')
@@ -30,6 +31,7 @@ process.on("unhandled exception", (err) =>{
         process.exit(1);
     
 })
+
 const connect = async () => {
     // try {
         mongoose.connect(MONGODB)

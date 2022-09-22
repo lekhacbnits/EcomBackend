@@ -1,9 +1,10 @@
 const dotenv = require('dotenv')
 dotenv.config();
+
 module.exports = {
          MONGODB:process.env.MONGO_URL
         //'mongodb+srv://cbnits:cbnits@atlascluster.3ylgt.mongodb.net/ecommerce?retryWrites=true&w=majority'  
-        //MONGODB: 'mongodb+srv://ecommerceapp:rw1CJfMTm3ayctRU@cluster0.zf7txk8.mongodb.net/?retryWrites=true&w=majority'
+        // MONGODB: 'mongodb+srv://ecommerceapp:rw1CJfMTm3ayctRU@cluster0.zf7txk8.mongodb.net/?retryWrites=true&w=majority'
 }
 
 
