@@ -35,7 +35,7 @@ exports.newOrder = catchAsyncErrors(async(req,res,next) =>{
     next()
 })
 
-//user orders
+//user order by admin
 exports.getSingleOrder = catchAsyncErrors(async(req,res,next) =>{
     const order = await Order.findById(req.params.id).populate(
         "user", 
@@ -52,62 +52,14 @@ exports.getSingleOrder = catchAsyncErrors(async(req,res,next) =>{
     });
 })
 
-//logged in user orders
-exports.myOrders = catchAsyncErrors(async(req,res, next) =>{
-    const order = await Order.find({user : req.user._id});
+//delete order --Admin
+exports.deleteOrder = catchAsyncErrors(async(req,res,next) => {
+    const order = await Order.findById(req.params.id);
     if(!order){
-        return next( new ErrorHandler(
-            "order not fount with this id", 404))
-        }
-    res.status(200).json({
-        success :true,
-        order,
-    });
-})
-
-//get all oders -- admin site
-exports.myOrders = catchAsyncErrors(async(req,res, next) =>{
-    const order = await Order.find();
-   
-    let totalAmount = 0;
-    order.forEach((order)=>{
-        totalAmount += order.totalPrice;
-    });
-    res.status(200).json({
-        success :true,
-        totalAmount,
-        order,
-        
-    });
-})
-
-
-//update orders status --Admin
-exports.updateOrder = catchAsyncErrors(async(req,res,next) => {
-    const order = await Order.find(req.params.id);
-
-    if(order.orderStatus === "Delivered"){
-        return next( new ErrorHandler("You have already delivered this order", 400))
+        return next(new ErrorHandler("order not found with id", 401))
     }
-
-    order.orderItems.forEach(async(order) => {
-     await updateStock(order.Product, order.quantity);
-    });
-
-    order.orderStatus = req.body.status;
-
-    if(req.body.status === "Delivered"){
-      order.deliveredAt = Date.now();
-    }
-    await order.save({validateBeforeSave:false});
-
+    await order.remove()
     res.status(200).json({
         success:true
     })
 })
-
-async function updateStock (id, quantity) {
-    const product = await Product.findById(id);
-    product.stock -= quantity;
-    await product.save({validateBeforeSave:false})
-}

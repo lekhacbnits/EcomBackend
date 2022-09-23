@@ -32,6 +32,7 @@ process.on("unhandled exception", (err) =>{
     
 })
 
+
 const connect = async () => {
     // try {
         mongoose.connect(MONGODB)
@@ -73,9 +74,6 @@ app.use("/users",  userRouter)
  app.use("/getallproducts",  require( "./routes/products"))
  app.use("/productdetails",  require('./routes/products'))
 app.use("/updateProduct", isAuthenticatedUser, authorizeRoles("Admin"),  require('./routes/products'))
-app.use("/review", isAuthenticatedUser,  require('./routes/products'))
-app.use("/reviews",  require('./routes/products'))
-app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/products'))
 
 
  //payment
@@ -85,14 +83,22 @@ app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require(
 //user
  app.use("/address", isAuthenticatedUser,  require('./routes/address') )
  app.use("/loggedUser",  isAuthenticatedUser,  require('./routes/users') )
- app.use("/getuser", adminAuth, require('./routes/users'))
+ app.use("/getuser", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users'))
  app.use('/getallusers', isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
- app.use("/resetPassEmail", require('./routes/users') )
- app.use("/resetPass", require('./routes/users') )
+ app.use("/resetPassEmail",isAuthenticatedUser, require('./routes/users') )
+ app.use("/resetPass",isAuthenticatedUser, require('./routes/users') )
  app.use("/favourites", require('./routes/favourite') )
- app.use("/updateProfile", require('./routes/users') )
+ app.use("/updateProfile",isAuthenticatedUser, require('./routes/users') )
+ app.use("/userOrders", isAuthenticatedUser, require('./routes/users') )
  app.use("/updateUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
  app.use("/deleteUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
+ app.use("/userreview", isAuthenticatedUser,  require('./routes/users') )
+app.use("/allreviews", require('./routes/users') )
+app.use("/deletereview",isAuthenticatedUser, require('./routes/users') )
+app.use("/admingetallorders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users'))
+app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/products'))
+app.use("/OrderUpdate", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
+
 
 //  app.use("/cart", require('./routes/cart') )
  app.use("/user", require('./routes/users') )
@@ -104,9 +110,7 @@ app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require(
  //order
  app.use("/order",  isAuthenticatedUser , require('./routes/order') )
  app.use("/singleOrders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
- app.use("/myorders", isAuthenticatedUser, require('./routes/order') )
- app.use("/allorders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
-
+ app.use("/deleteOrder", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
 
 
 // app.use("/", require('./routes/address'))

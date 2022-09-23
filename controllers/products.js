@@ -8,85 +8,16 @@ const ApiFeatures = require('../utils/apifeatures')
 const adminAuth = require('../middleware/adminAuth')
 const User = require('../models/users')
 
-// const adminRole = require('../middleware/role')
-//const mongoose = require('mongoose')
-
-//Fashion CRUD
-// module.exports.getfashion = (req, res)=>{
-//     res.json("inside getfashion controllers")
-// }
-// module.exports.addfashion = (req, res)=>{
-//     res.json("inside addfashion product controllers")
-// }
-// module.exports.updatefashion = (req, res)=>{
-//    res.json("inside updatefashion product controllers")
-// }
-//    module.exports.deletefashion = (req, res)=>{
-//     res.json("inside deletefashion product controllers")
-// }
-
-//Grocery CRUD
-// module.exports.getgroceries = (req, res)=>{
-//     res.json("inside getgroceries controllers")
-//    }
-//    module.exports.updategrocery = (req, res)=>{
-//     res.json("inside updategrocery controllers")
-//    }
-//    module.exports.deletegrocery = (req, res)=>{
-//     res.json("inside deletegrocery controllers")
-//    }
-//    module.exports.addgrocery = (req, res)=>{
-//     res.json("inside addgrocery controllers")
-//    }
-
-//electronics CRUD
-// module.exports.getelectronics = (req, res)=>{
-//    res.json("inside getelectronics controllers")
-//     }
-// module.exports.addelectronic = (req, res)=>{
-//     res.json("inside addelectronic controllers")
-//     }
-// module.exports.deleteelectronic = (req, res)=>{
-//    res.json("inside deleteelectronic controllers")
-//     }
-// module.exports.updateelectronic = (req, res)=>{
-//    res.json("inside updateelectronic controllers")
-// }
-
-//Cosmetics CRUD
-// module.exports.getcosmetics = (req, res)=>{
-//     res.json("inside getcosmetics controllers")
-// }            
-// module.exports.addcosmetic = (req, res)=>{
-//     res.json("inside addcosmetic controllers")
-// }
-// module.exports.updatecosmetic = (req, res)=>{
-//     res.json("inside updatecosmetic controllers")
-// }
-// module.exports.deletecosmetic = (req, res)=>{
-//     res.json("inside deletecosmetic controllers")
-// }
-
-
-
-
 //create product api --Admin
 module.exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
-    // const authHeader = req.headers.authorization
-    // const token = authHeader.split(" ")[1]
-    // const varifytoken = jwt.verify(token,config.TOKEN_KEY );
-    // const users = await User.findOne({id: varifytoken.user_id})
-    // req.body.user = users._id
-    // console.log( req.user)
     req.body.user = req.user._id
-    console.log('first',  req.user._id)
     const product = await Product.create(req.body);
     res.status(201).json({
        success:true,
        product
    });
 
-   await Product.save()
+   await product.save()
    next()
 });
 
@@ -202,109 +133,65 @@ module.exports.deleteProduct = catchAsyncErrors(async (req,res, next) =>{
    
 //  };
  
-//create new review or update the review
-module.exports.createProductReview = catchAsyncErrors(async(req, res, next)=>{
-  // user = req.user._id
-  console.log('req.body.user',  req.user._id)
+
+// const adminRole = require('../middleware/role')
+//const mongoose = require('mongoose')
+
+//Fashion CRUD
+// module.exports.getfashion = (req, res)=>{
+//     res.json("inside getfashion controllers")
+// }
+// module.exports.addfashion = (req, res)=>{
+//     res.json("inside addfashion product controllers")
+// }
+// module.exports.updatefashion = (req, res)=>{
+//    res.json("inside updatefashion product controllers")
+// }
+//    module.exports.deletefashion = (req, res)=>{
+//     res.json("inside deletefashion product controllers")
+// }
+
+//Grocery CRUD
+// module.exports.getgroceries = (req, res)=>{
+//     res.json("inside getgroceries controllers")
+//    }
+//    module.exports.updategrocery = (req, res)=>{
+//     res.json("inside updategrocery controllers")
+//    }
+//    module.exports.deletegrocery = (req, res)=>{
+//     res.json("inside deletegrocery controllers")
+//    }
+//    module.exports.addgrocery = (req, res)=>{
+//     res.json("inside addgrocery controllers")
+//    }
+
+//electronics CRUD
+// module.exports.getelectronics = (req, res)=>{
+//    res.json("inside getelectronics controllers")
+//     }
+// module.exports.addelectronic = (req, res)=>{
+//     res.json("inside addelectronic controllers")
+//     }
+// module.exports.deleteelectronic = (req, res)=>{
+//    res.json("inside deleteelectronic controllers")
+//     }
+// module.exports.updateelectronic = (req, res)=>{
+//    res.json("inside updateelectronic controllers")
+// }
+
+//Cosmetics CRUD
+// module.exports.getcosmetics = (req, res)=>{
+//     res.json("inside getcosmetics controllers")
+// }            
+// module.exports.addcosmetic = (req, res)=>{
+//     res.json("inside addcosmetic controllers")
+// }
+// module.exports.updatecosmetic = (req, res)=>{
+//     res.json("inside updatecosmetic controllers")
+// }
+// module.exports.deletecosmetic = (req, res)=>{
+//     res.json("inside deletecosmetic controllers")
+// }
 
 
-    const {rating, comment, productId} = req.body;
-  //  console.log('fir req.body.userst', req.body.user)
-  //   req.body.name= req.user.name,
-  //   req.body.user = req.user._id
-    // const user = await User.findOne(req.ramaps.id)
-    // console.log('user', user)
 
-    const review = {     
-       user:req.user._id,
-       name :req.user.name,
-      rating: Number(rating),
-      comment,
-    };
-
-    const product = await Product.findById(productId);
-    const isReview = product.reviews.find(
-      (rev) => rev.user.toString() === req.body.user.toString()
-    )
-    if(isReview){
-        product.reviews.forEach((rev)=>{
-          if(rev.user.toString() ===   req.body.user.toString())
-          (rev.rating == rating), (rev.comment = comment)
-        });
-    }else{
-        product.reviews.push(review)
-        product.numOfReviews = product.reviews.length;
-    }
-    let avg = 0;
-    product.ratings = product.reviews.forEach((rev)=>{
-        avg+= rev.rating;
-    })
-    product.ratings = avg / product.reviews.length;
-
-    await product.save({ validateBeforeSave: false });
-  
-    return res.status(200).json({
-      success: true,
-      message: "review done"
-    });
-    next()
-})
-//get product reviews
-module.exports.productReview = catchAsyncErrors(async (req,res,next)=>{
-    const product = await Product.findById(req.query.id);
-
-    if(!product){
-        return next(new ErrorHandler("Product not found", 404));
-    }
-    res.status(200).json({
-        success:true,
-        reviews:product.reviews
-    })
-})
-
-// Delete Review
-exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
-    const product = await Product.findById(req.query.productId);
-  
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-  
-    const reviews = product.reviews.filter(
-      (rev) => rev._id.toString() !== req.query.id.toString()
-    );
-  
-    let avg = 0;
-  
-    reviews.forEach((rev) => {
-      avg += rev.rating;
-    });
-  
-    let ratings = 0;
-  
-    if (reviews.length === 0) {
-      ratings = 0;
-    } else {
-      ratings = avg / reviews.length;
-    }
-  
-    const numOfReviews = reviews.length;
-  
-    await Product.findByIdAndUpdate(
-      req.query.productId,
-      {
-        reviews,
-        ratings,
-        numOfReviews,
-      },
-      {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
-      }
-    );
-  
-    res.status(200).json({
-      success: true,
-    });
-  });
