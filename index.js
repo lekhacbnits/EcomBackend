@@ -78,7 +78,7 @@ app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require(
 app.use("/OrderUpdate", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
 
  app.use("/user", require('./routes/users') )
- app.use("/cart", require('./routes/cart') )
+ app.use("/carts", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
 
  //order
