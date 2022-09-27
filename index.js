@@ -3,27 +3,18 @@ const app = express();
 const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
-
 const userRouter = require('./routes/users')
+const stripeRouter = require('./routes/stripe')
 const userController = require('./controllers/users')
-const productController = require('./controllers/products')
-const auth = require('./middleware/auth')
-const adminAuth = require('./middleware/adminAuth')
-const productRouter = require('./routes/products')
 const User = require('./models/users');
 const  {MONGODB} = require ('./config/db')
-const errorMiddleware = require('./middleware/error')
-const catchAsyncErrors = require('./middleware/catchAsyncError')
-const authorisedRole = require('./middleware/role')
 const { isAuthenticatedUser, authorizeRoles } = require("./middleware/role");
 dotenv.config();
-// const DefaultData = require('./default')
-// DefaultData()
-
 
 app.use(cors())
 app.use(express.json())
 const Port = process.env.PORT
+
 process.on("unhandled exception", (err) =>{
     console.log('Error', `${err.message}`)
     console.log('shutting down server due to unhandled exception')
@@ -34,13 +25,8 @@ process.on("unhandled exception", (err) =>{
 
 
 const connect = async () => {
-    // try {
         mongoose.connect(MONGODB)
         console.log("connected")
-    // } 
-    // catch (error) {
-    //     console.log(error)
-    // }
 }
 mongoose.connection.on("disconnected", () => {
     console.log("+++++++++++++++++++++disconnected")
@@ -56,30 +42,22 @@ app.get('/confirmation/:token', async (req, res) => {
     catch (e) {
         res.send(e)
     }
-    // next()
 })
-//DefaultData()
 
 app.post("/signup", userController.signUp)
 app.post("/login", userController.login)
-
+app.use('/stripe', stripeRouter)
 app.use("/users",  userRouter)
 
 
 //products
- app.use("/carts", require("./routes/cart"))
- //app.use("/cart", productController.getProduct)
- 
  app.use("/createproducts", isAuthenticatedUser, authorizeRoles("Admin"), require( "./routes/products") )
  app.use("/getallproducts",  require( "./routes/products"))
  app.use("/productdetails",  require('./routes/products'))
 app.use("/updateProduct", isAuthenticatedUser, authorizeRoles("Admin"),  require('./routes/products'))
-
-
  //payment
  app.use("/paytmpayment", require('./routes/payment'))
  app.use("/paypal", require('./routes/payment'))
- 
 //user
  app.use("/address", isAuthenticatedUser,  require('./routes/address') )
  app.use("/loggedUser",  isAuthenticatedUser,  require('./routes/users') )
@@ -99,31 +77,14 @@ app.use("/admingetallorders", isAuthenticatedUser, authorizeRoles("Admin"), requ
 app.use("/deleteProduct", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/products'))
 app.use("/OrderUpdate", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
 
-
-//  app.use("/cart", require('./routes/cart') )
  app.use("/user", require('./routes/users') )
  app.use("/cart", require('./routes/cart') )
  app.use("/deletecart", require('./routes/cart') )
-
-
 
  //order
  app.use("/order",  isAuthenticatedUser , require('./routes/order') )
  app.use("/singleOrders", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
  app.use("/deleteOrder", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
-
-
-// app.use("/", require('./routes/address'))
-// app.use("/", require('./routes/users'))
-// app.use("/", require('./routes/favourite'))
-// app.use("/", require('./routes/payment') )
-// app.use("/",  require('./routes/cart'))
-// app.use("/", authRouter)
-//  paypal.configure({
-//     "mode":'sandbox',
-//     "client_id":"AY4QlT_0rkLM7PG1VGiKiC2WsMsvfW6WV8wnQFNBkOWKb6bnN628ZDCSp7zUnGRIqzOqXlLO4XSij3c-",
-//     "client_secret":"EMs6S61fINBvdeiNjOJUtwRhEs8edbgyUL36dEm8qRquWjE6XmAHPjO34BR0JQS_2gZaSf_KQ6GoXbhv"
-//  })
 
 app.get('/', (req, res)=>{
     res.json({"message":"listening to port 8000"});
