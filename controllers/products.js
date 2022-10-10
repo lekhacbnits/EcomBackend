@@ -24,7 +24,7 @@ module.exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
 //get products api with filter, search pagination option
 module.exports.getAllProducts = catchAsyncErrors(async (req, res, next)=>{
    const resultPerpage = 5;
-   // const productCount = await Product.countDocuments();
+   const productCount = await Product.countDocuments();
    let apiFeatures = new ApiFeatures(Product.find(), req.query)
    .search()
    .filter()
@@ -34,7 +34,7 @@ module.exports.getAllProducts = catchAsyncErrors(async (req, res, next)=>{
    res.status(201).json({
        success:true,
        getproducts,
-       // productCount
+       productCount
    })
 });
 
