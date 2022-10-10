@@ -280,9 +280,9 @@ exports.deleteUser = catchAsyncErrors(async(req, res,next ) =>{
 
 
 module.exports.updateUser = async(req, res) => {
-  const { name, email, contact,  address, gender } = req.body;
+  const { name, email, contact,  address1, address2, city, country, state, zipcode, gender } = req.body;
   try{
-   const updatedUser = await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, email:email, address:address, gender:gender}})
+   const updatedUser = await User.findByIdAndUpdate ((req.body.id), {$set:{name:name, contact:contact, email:email, gender:gender, address1:address1, address2:address2, city:city, country:country, state:state, zipcode:zipcode}})
     console.log("//////////",req.body, updatedUser)
     res.status(200).json(updatedUser)
   }catch(error){
