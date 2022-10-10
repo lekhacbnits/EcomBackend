@@ -1,7 +1,7 @@
 const  products = [
     { 
-       name:"product1",
-       description: 'This electric kettle from Pigeon will soon become a travelers best friend, a hostelite saviour and an answer to all the midnight cravings. With this handy appliance, you can boil water and use it to make instant noodles, packet soup, coffee and green tea.',
+       name:"ears plugs",
+       description: 'Wireless ear plugs',
 
       
         price:500,
@@ -14,8 +14,8 @@ const  products = [
         url: 'https://images-eu.ssl-images-amazon.com/images/I/31BMd11KciL._AC_SX184_.jpg', 
         detailUrl: 'https://images-eu.ssl-images-amazon.com/images/I/31BMd11KciL._AC_SX184_.jpg', 
         title: {
-            shortTitle: 'Home & Kitchen',
-            longTitle: 'Pigeon FAVOURITE Electric Kettle  (1.5 L, Silver, Black)'
+            shortTitle: 'Accessories',
+            longTitle: 'Mobile accessories blue and white'
         }, 
         quantity: 1,
         discount: 'Extra 10% Off', 
@@ -23,7 +23,7 @@ const  products = [
     },
     { 
        name:"product2",   
-      description: 'This electric kettle from Pigeon will soon become a travelers best friend, a hostelite saviour and an answer to all the midnight cravings. With this handy appliance, you can boil water and use it to make instant noodles, packet soup, coffee and green tea.',
+      description: 'This wireless ear plugs from Samsung will soon become a travelers best friend, a hostelite saviour and an answer to all the midnight cravings. With this handy appliance, you can lesten to music and use it to make instant calls, audio books, while making coffee and green tea.',
 
       price:600,
 

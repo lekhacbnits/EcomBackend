@@ -36,9 +36,6 @@ const userSchema = new Schema({
     gender: {
         type: String,
     },
-    address: {
-        type: String,
-    },
     address1: {
         type: String,
     },
@@ -55,9 +52,6 @@ const userSchema = new Schema({
         type: String,
     },
     zipcode: {
-        type: String,
-    },
-    housenumber: {
         type: String,
     },
     cardName: {
@@ -81,10 +75,6 @@ const userSchema = new Schema({
     resetLink: {
         data: String,
         default: ''
-    },
-    address: {
-        type: String,
-        required: false
     },
     date: { type: Date, default: Date.now },
     photo: {
