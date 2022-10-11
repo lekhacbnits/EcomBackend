@@ -77,10 +77,10 @@ const userSchema = new Schema({
         default: ''
     },
     date: { type: Date, default: Date.now },
-    photo: {
+    pic: {
         type: String,
-        default:'/Image/user1.jpg'
-    },
+        required: false
+        },
     Token: {
         type: String,
         required: true

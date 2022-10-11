@@ -15,7 +15,7 @@ router.post("/updatePhoto", userController.updatePicture)
 
 router.post("/resetPassEmail", userController.resetPassEmail)
 router.post("/resetPass/:_id/:token", userController.resetPass)
- router.post("/profilePhoto", profileController.profilePhoto)
+//  router.post("/profilePhoto", profileController.profilePhoto)
 //router.put("/:id", profileController.updateProfile)
 router.post("/userOrders", profileController.userOrders) // logged users can see all the orders
 router.put('/review', profileController.createreview)
