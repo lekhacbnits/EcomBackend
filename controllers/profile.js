@@ -5,21 +5,23 @@ const ErrorHandler = require('../utils/errorhandler')
 const ApiFeatures = require('../utils/apifeatures')
 const path = require('path');
 const multer = require('multer')
-const fileStorageEngine = multer.diskStorage({
-    destination:(req, file, cb)=>{
-        cb(null, path.join(__dirname, '../../front/public/Image/'));
-    },
-    filename:(req, file, cb)=>{
-        cb(null, '--'+file.originalname)
-    }
-})
-const upload = multer({storage: fileStorageEngine})
-//app.post('/post', upload.single('image'), (req, res)=>{
-    module.exports.profilePhoto = upload.single('image'),(req, res)=>{
-        // const { id, filePath } = req.body;
-        // User.findByIdAndUpdate((id), {$set:{photo:URL.createObjectURL(filePath)}})
-            res.send('one file uploaded')
-}
+const User = require('../models/users')
+
+// const fileStorageEngine = multer.diskStorage({
+//     destination:(req, file, cb)=>{
+//         cb(null, path.join(__dirname, '../../front/public/Image/'));
+//     },
+//     filename:(req, file, cb)=>{
+//         cb(null, '--'+file.originalname)
+//     }
+// })
+// const upload = multer({storage: fileStorageEngine})
+// //app.post('/post', upload.single('image'), (req, res)=>{
+//     module.exports.profilePhoto = upload.single('image'),(req, res)=>{
+//         // const { id, filePath } = req.body;
+//         // User.findByIdAndUpdate((id), {$set:{photo:URL.createObjectURL(filePath)}})
+//             res.send('one file uploaded')
+// }
 // module.exports.updateProfile = async (req,res)=>{
 //     const id = req.params.id
 // //    console.log(id)
@@ -214,3 +216,4 @@ async function updateStock (id, quantity) {
   await product.save({validateBeforeSave:false})
 }
   
+

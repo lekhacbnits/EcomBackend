@@ -1,4 +1,5 @@
 const express = require('express')
+const { ApolloServer, gql } = require('apollo-server-express');
 const app = express();
 const cors = require('cors')
 const dotenv = require('dotenv')
@@ -9,6 +10,8 @@ const userController = require('./controllers/users')
 const User = require('./models/users');
 const  {MONGODB} = require ('./config/db')
 const { isAuthenticatedUser, authorizeRoles } = require("./middleware/role");
+const {typeDefs} = require("./typedefs/profilepic")
+const {resolvers} = require("./resolver/profilepic")
 dotenv.config();
 
 app.use(cors())
@@ -66,7 +69,7 @@ app.use("/updateProduct", isAuthenticatedUser, authorizeRoles("Admin"),  require
  app.use("/resetPassEmail",isAuthenticatedUser, require('./routes/users') )
  app.use("/resetPass",isAuthenticatedUser, require('./routes/users') )
  app.use("/favourites", require('./routes/favourite') )
- app.use("/updateProfile",isAuthenticatedUser, require('./routes/users') )
+ app.use("/userprofilepic/",isAuthenticatedUser, require('./routes/users') )
  app.use("/userOrders", isAuthenticatedUser, require('./routes/users') )
  app.use("/updateUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
  app.use("/deleteUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
@@ -90,4 +93,15 @@ app.get('/', (req, res)=>{
     res.json({"message":"listening to port 8000"});
     console.log("done");
 })
-app.listen(Port, () => { connect(); console.log(`connected on port ${Port}`) });
+//profilepic route
+
+app.use("/Profile",isAuthenticatedUser, require('./routes/profilepic') )
+
+// const server = new ApolloServer({
+//     typeDefs,
+//     resolvers,
+//   });
+
+//   server.applyMiddleware({app})
+  app.use(express.static('public'))
+  app.listen(Port, () => { connect(); console.log(`connected on port ${Port}`) });
