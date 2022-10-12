@@ -53,7 +53,7 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
     );
     // save user token
     newUser.Token = token;
-    const url = `http://localhost:8000/confirmation/${token}`
+    const url = `http://localhost:5000/confirmation/${token}`
     const options = {
       from: process.env.MAILID, // sender address
       to:email,
@@ -73,7 +73,7 @@ module.exports.signUp = catchAsyncErrors(async (req, res) => {
       // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       res.status(201).json(newUser);
     });
-
+    
   // } 
   // catch (err) {
   //   console.log(err);
