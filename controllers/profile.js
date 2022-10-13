@@ -54,7 +54,6 @@ const User = require('../models/users')
 //logged in user orders
 exports.userOrders = catchAsyncErrors(async(req,res, next) =>{
     const orders = await Order.find({user: req.body._id});
-
     res.status(200).json({
         success :true,
         orders,
