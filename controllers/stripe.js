@@ -17,24 +17,4 @@ module.exports.stripePay = async (req, res) => {
     status='failure'
   }
   res.json({ error, status })
-  // stripe.customers.create({
-  //   email
-  // })
-  // .then(async(customer) => {
-  //     // have access to the customer object
-  //    await stripe.invoiceItems
-  //       .create({
-  //         customer: customer.id, // set the customer id
-  //         amount, // 25
-  //         currency: 'usd',
-  //         description: 'One-time setup fee',
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         res.json(err)
-  //       });
-  //       console.log(customer)
-  //       res.json(customer)
-  //   });
-
 }

@@ -90,7 +90,7 @@ app.use("/OrderUpdate", isAuthenticatedUser, authorizeRoles("Admin"), require('.
  app.use("/deleteOrder", isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/order') )
 
 app.get('/', (req, res)=>{
-    res.json({"message":"listening to port 8000"});
+    res.json({"message":"listening to port 5000"});
     console.log("done");
 })
 //profilepic route
