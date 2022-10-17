@@ -71,6 +71,7 @@ app.use("/updateProduct", isAuthenticatedUser, authorizeRoles("Admin"),  require
  app.use("/favourites", require('./routes/favourite') )
  app.use("/userprofilepic/",isAuthenticatedUser, require('./routes/users') )
  app.use("/userOrders", isAuthenticatedUser, require('./routes/users') )
+ app.use("/updateProfile", isAuthenticatedUser, require('./routes/users') )
  app.use("/updateUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
  app.use("/deleteUser",isAuthenticatedUser, authorizeRoles("Admin"), require('./routes/users') )
  app.use("/userreview", isAuthenticatedUser,  require('./routes/users') )
